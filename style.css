@@ -1,4 +1,4 @@
-/* ---------> Main */
+/* ---------> General */
 :root {
   --main-bg: #150f09;
   --text: #f3e3c7;
@@ -13,6 +13,7 @@ body {
   margin: 0;
   padding: 0;
   font-size: 16px;
+  position: relative;
 }
 
 img {
@@ -26,7 +27,29 @@ img {
 
 p {
   line-height: 0.5;
-  font-size: .7rem;
+  font-size: 0.7rem;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  height: max-content;
+  width: max-content;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.display-none {
+  display: none;
 }
 
 /* ---------> Background */
@@ -80,14 +103,6 @@ header {
   align-items: end;
 }
 
-header button {
-  padding: 0;
-  margin: 0;
-  border: none;
-  height: max-content;
-  background: transparent;
-}
-
 .logo {
   width: 14em;
 }
@@ -96,10 +111,42 @@ header button img {
   width: 3.5em;
 }
 
+.navbar {
+  z-index: 2;
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--main-bg);
+  opacity: .85;
+  text-align:right;
+}
+
+.navbar-button-close {
+  display: inline-block;
+  margin-top: 4em;
+  padding-right: 1.9em; 
+  text-align: right;
+}
+
+.navbar-list {
+  text-align: center;
+  margin-top: 3em;
+  width: 40%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-list-item {
+  font-size: 1.9rem;
+  line-height: 2.7;
+}
 
 /* ---------> Footer */
 
-footer { 
+footer {
   position: absolute;
   bottom: 0;
   height: 15em;
@@ -122,7 +169,7 @@ footer {
 
 .copyright {
   display: block;
-  font-size: .4em;
+  font-size: 0.4em;
   text-align: center;
   margin-top: 6em;
 }
