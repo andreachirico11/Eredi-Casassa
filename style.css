@@ -1,6 +1,6 @@
 /* ---------> General */
 :root {
-  --main-bg: #150f09;
+  --main-bg: rgb(21, 15, 9);
   --text: #f3e3c7;
   box-sizing: border-box;
   font-family: 'Life Savers', cursive;
@@ -14,6 +14,7 @@ body {
   padding: 0;
   font-size: 16px;
   position: relative;
+  z-index: 0;
 }
 
 img {
@@ -54,12 +55,31 @@ a {
 
 /* ---------> Background */
 
+.background,
+.background-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+
 .background {
+  height: 100vh;
   background-image: url('./assets/bg-photo.png');
   background-repeat: no-repeat;
   background-position: top;
-  height: 100vh;
-  background-size: 55em;
+  background-size: 40em;
+}
+
+.background::before {
+  content: “ ”;
+  background: inherit;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.3);
+  filter: blur(10px);
 }
 
 .background-overlay {
@@ -114,19 +134,25 @@ header button img {
 .navbar {
   z-index: 2;
   top: 0;
-  left: 0;
   position: absolute;
   width: 100vw;
   height: 100vh;
   background-color: var(--main-bg);
-  opacity: .85;
-  text-align:right;
+  opacity: 0.85;
+  text-align: right;
+  left: 100vw;
+  display: none;
+}
+
+.navbar-open {
+  display: initial;
+  left: 0;
 }
 
 .navbar-button-close {
   display: inline-block;
   margin-top: 4em;
-  padding-right: 1.9em; 
+  padding-right: 1.9em;
   text-align: right;
 }
 
@@ -137,6 +163,7 @@ header button img {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
+  padding: 0;
 }
 
 .navbar-list-item {
@@ -154,7 +181,6 @@ footer {
 }
 
 .footer-content {
-  padding-top: 0;
   height: 60%;
   display: flex;
   flex-direction: column;
@@ -171,5 +197,4 @@ footer {
   display: block;
   font-size: 0.4em;
   text-align: center;
-  margin-top: 6em;
 }
