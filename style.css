@@ -1,0 +1,128 @@
+/* ---------> Main */
+:root {
+  --main-bg: #150f09;
+  --text: #f3e3c7;
+  box-sizing: border-box;
+  font-family: 'Life Savers', cursive;
+  font-size: 400;
+  color: var(--text);
+}
+
+body {
+  background-color: var(--main-bg);
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+.main-padding {
+  padding: 2em 1.5em;
+}
+
+p {
+  line-height: 0.5;
+  font-size: .7rem;
+}
+
+/* ---------> Background */
+
+.background {
+  background-image: url('./assets/bg-photo.png');
+  background-repeat: no-repeat;
+  background-position: top;
+  height: 100vh;
+  background-size: 55em;
+}
+
+.background-overlay {
+  width: 100%;
+  height: 100%;
+  background: -webkit-gradient(
+    to bottom,
+    var(--main-bg),
+    rgba(0, 0, 0, 0),
+    var(--main-bg),
+    var(--main-bg)
+  );
+  background: -webkit-linear-gradient(
+    to bottom,
+    var(--main-bg),
+    rgba(0, 0, 0, 0),
+    var(--main-bg),
+    var(--main-bg)
+  );
+  background: -ms-linear-gradient(
+    to bottom,
+    var(--main-bg),
+    rgba(0, 0, 0, 0),
+    var(--main-bg),
+    var(--main-bg)
+  );
+  background: linear-gradient(
+    to bottom,
+    var(--main-bg),
+    rgba(0, 0, 0, 0),
+    var(--main-bg),
+    var(--main-bg)
+  );
+}
+
+/* ---------> Header */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+header button {
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: max-content;
+  background: transparent;
+}
+
+.logo {
+  width: 14em;
+}
+
+header button img {
+  width: 3.5em;
+}
+
+
+/* ---------> Footer */
+
+footer { 
+  position: absolute;
+  bottom: 0;
+  height: 15em;
+  width: 100%;
+}
+
+.footer-content {
+  padding-top: 0;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-content-left,
+.footer-content-right {
+  text-align: center;
+}
+
+.copyright {
+  display: block;
+  font-size: .4em;
+  text-align: center;
+  margin-top: 6em;
+}
