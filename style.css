@@ -14,7 +14,6 @@ body {
   padding: 0;
   font-size: 16px;
   position: relative;
-  z-index: 0;
 }
 
 img {
@@ -27,8 +26,8 @@ img {
 }
 
 p {
-  line-height: 0.5;
-  font-size: 0.7rem;
+  line-height: 1.5;
+  font-size: 0.6rem;
 }
 
 button {
@@ -53,20 +52,28 @@ a {
   display: none;
 }
 
+h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 /* ---------> Background */
 .bg-photo {
   background-image: url('./assets/bg-photo.png');
+  --overlay: rgba(0,0,0,0);
 }
 
 .bg-photo-blurred {
   background-image: url('./assets/bg-photo-blurred.png');
+  --overlay: rgba(0,0,0,0.5);
 }
 
 .background {
+  background-color: var(--main-bg);
   height: 100vh;
   background-repeat: no-repeat;
   background-position: top;
-  background-size: 40em;
+  background-size: 50em;
 }
 
 .background-overlay {
@@ -75,28 +82,28 @@ a {
   background: -webkit-gradient(
     to bottom,
     var(--main-bg),
-    rgba(0, 0, 0, 0),
+  var(--overlay),
     var(--main-bg),
     var(--main-bg)
   );
   background: -webkit-linear-gradient(
     to bottom,
     var(--main-bg),
-    rgba(0, 0, 0, 0),
+  var(--overlay),
     var(--main-bg),
     var(--main-bg)
   );
   background: -ms-linear-gradient(
     to bottom,
     var(--main-bg),
-    rgba(0, 0, 0, 0),
+  var(--overlay),
     var(--main-bg),
     var(--main-bg)
   );
   background: linear-gradient(
     to bottom,
     var(--main-bg),
-    rgba(0, 0, 0, 0),
+  var(--overlay),
     var(--main-bg),
     var(--main-bg)
   );
@@ -189,4 +196,21 @@ footer {
   display: block;
   font-size: 0.4em;
   text-align: center;
+}
+
+
+/* ---------> History */
+main {
+  padding: 3em;
+}
+
+.history-container {
+  text-align: center;
+}
+
+.history-container p {
+  line-height: 160%;
+  letter-spacing: 1px;
+  font-weight: bold;
+  margin-top: 3em;
 }
