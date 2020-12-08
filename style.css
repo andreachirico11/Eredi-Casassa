@@ -158,6 +158,11 @@ header button img {
   line-height: 2.7;
 }
 
+.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 /* ---------> Footer */
 
 footer {
