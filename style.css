@@ -29,6 +29,7 @@ img {
 p {
   line-height: 1.5;
   font-size: 0.6rem;
+  margin: 0;
 }
 
 button {
@@ -190,27 +191,47 @@ header button img {
 footer {
   position: absolute;
   bottom: 0;
-  height: 15em;
   width: 100%;
 }
 
 .footer-content {
-  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
 
+
 .footer-content-left,
 .footer-content-right {
   text-align: center;
+}
+
+.footer-content-left {
+  margin-bottom: 1em;
 }
 
 .copyright {
   display: block;
   font-size: 0.4em;
   text-align: center;
+  margin-bottom: 2em;
+}
+
+@media (max-height: 750px)  {
+  .footer-content {
+  flex-direction: row;
+}
+  footer {
+    height: 8em;  
+  }
+
+  .footer-content-left {
+    text-align: left;
+  }
+  .footer-content-right {
+    text-align: right;
+  }
 }
 
 /* ---------> History */
