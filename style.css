@@ -59,19 +59,30 @@ h1 {
   font-weight: bold;
 }
 
-
-input, textarea {
+input,
+textarea {
   border: 1px solid var(--text);
-box-sizing: border-box;
-border-radius: 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
   background: none;
   display: block;
   width: 100%;
-  padding: .2em;
+  padding: 0.2em;
 }
 
 textarea {
   height: 4rem;
+}
+
+@media (min-width: 600px) {
+  .main-padding {
+    padding: 3em 2.5em;
+  }
+  
+  h1 {
+    font-size: 2.4rem;
+    line-height: 1.5;
+  }
 }
 
 /* ---------> Background */
@@ -125,6 +136,39 @@ textarea {
   );
 }
 
+@media (min-width: 600px) {
+  .background {
+    background-position: top;
+    background-size: 80em;
+  }
+  .background-overlay {
+    background: -webkit-gradient(
+      to bottom,
+      var(--main-bg) 1%,
+      var(--overlay) 49%,
+      var(--main-bg) 70%
+    );
+    background: -webkit-linear-gradient(
+      to bottom,
+      var(--main-bg) 1%,
+      var(--overlay) 49%,
+      var(--main-bg) 70%
+    );
+    background: -ms-linear-gradient(
+      to bottom,
+      var(--main-bg) 1%,
+      var(--overlay) 49%,
+      var(--main-bg) 70%
+    );
+    background: linear-gradient(
+      to bottom,
+      var(--main-bg) 1%,
+      var(--overlay) 49%,
+      var(--main-bg) 70%
+    );
+  }
+}
+
 /* ---------> Header */
 
 header {
@@ -150,27 +194,22 @@ header button img {
   background-color: var(--main-bg);
   opacity: 0.85;
   text-align: right;
-  left: 100vw;
+  right: 100;
   display: none;
-}
-
-.navbar-open {
-  display: initial;
-  left: 0;
 }
 
 .navbar-button-close {
   display: inline-block;
-  margin-top: 4em;
+  margin-top: 5em;
   padding-right: 1.9em;
   text-align: right;
 }
 
 .navbar-list {
   text-align: center;
-  margin-top: 3em;
   width: 40%;
   margin: 0 auto;
+  margin-top: 3em;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -184,6 +223,42 @@ header button img {
 .active {
   font-weight: bold;
   text-decoration: underline;
+}
+
+@media (min-width: 600px) {
+  .logo {
+    width: 25em;
+  }
+
+  header button img {
+    width: 6em;
+  }
+
+  .navbar {
+    top: 0;
+    width: 35vw;
+    text-align: right;
+    display: none;
+  }
+
+  .navbar-button-close {
+    margin-top: 6em;
+    padding-right: 3rem;
+  }
+
+  .navbar-list {
+    width: 100%;
+    text-align: right;
+  }
+
+  .navbar-list-item {
+    padding-right: 3rem;
+  }
+
+  .navbar-open {
+    display: unset;
+    right: 0;
+  }
 }
 
 /* ---------> Footer */
@@ -201,7 +276,6 @@ footer {
   align-items: center;
 }
 
-
 .footer-content-left,
 .footer-content-right {
   text-align: center;
@@ -218,12 +292,13 @@ footer {
   margin-bottom: 2em;
 }
 
-@media (max-height: 750px)  {
+@media (max-height: 750px) or (min-width: 600px) {
   .footer-content {
-  flex-direction: row;
-}
+    flex-direction: row;
+    margin-bottom: 0;
+  }
   footer {
-    height: 8em;  
+    height: 10em;
   }
 
   .footer-content-left {
@@ -231,6 +306,20 @@ footer {
   }
   .footer-content-right {
     text-align: right;
+  }
+}
+
+@media (min-width: 600px) {
+  footer {
+    height: unset;
+  }
+
+  footer p {
+    font-size: 1em;
+  }
+
+  .copyright {
+    font-size: 0.8em;
   }
 }
 
@@ -243,6 +332,18 @@ main {
   text-align: center;
 }
 
+.history-container span {
+  font-size: 1.7em;
+}
+
+.history-container img{
+  display: none;
+}
+
+.history-container h1 {
+ align-self: center;
+}
+
 .history-container p {
   line-height: 160%;
   letter-spacing: 1px;
@@ -250,7 +351,28 @@ main {
   margin-top: 3em;
 }
 
-/* ---------> articies */
+@media (min-width: 600px) {
+  
+  .history-container {
+    display: grid;
+    column-gap: 10%;
+    grid-template-columns: 30% 60%;
+    padding: 2em;
+  }
+  
+.history-container img{
+  display: unset;
+  
+}
+  
+  .history-container p {
+  grid-column: span 2;
+    font-size: 1rem;
+  }
+  
+}
+
+/* ---------> articles */
 
 .categories-grid {
   display: grid;
@@ -285,20 +407,18 @@ main {
 
 /* ---------> Contacts */
 
-.contacts-container, .contact-form {
+.contacts-container,
+.contact-form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
 }
 
-
 .contact-form {
   text-align: left;
   height: 250px;
 }
-
-
 
 .form h1 {
   text-align: left;
@@ -309,7 +429,7 @@ main {
   margin-top: 1em;
 }
 
-.info p{
+.info p {
   margin: 0;
   font-weight: bold;
   font-size: 1rem;
