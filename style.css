@@ -6,7 +6,7 @@
   font-family: 'Life Savers', cursive;
   font-size: 400;
   color: var(--text);
-  --main-shadow: 1px 4px 10px rgb(21, 15, 9, 0.5);
+  --main-shadow: 1px 1px 10px rgb(21, 15, 9, 0.5);
 }
 
 body {
@@ -254,12 +254,12 @@ header button img {
   .navbar-list-item {
     padding-right: 3rem;
   }
+}
 
   .navbar-open {
     display: unset;
     right: 0;
   }
-}
 
 /* ---------> Footer */
 
@@ -402,6 +402,14 @@ main {
   box-shadow: var(--main-shadow);
 }
 
+@media (min-widt: 600px) {
+  .category {
+  width: 150px;
+  text-align: center;
+} 
+}
+
+
 /* ---------> Contacts */
 
 .contacts-container,
@@ -412,14 +420,19 @@ main {
   text-align: center;
 }
 
+
 .contact-form {
   text-align: left;
   height: 250px;
 }
 
-.form h1 {
+.contacts-column h1 {
   text-align: left;
   margin-bottom: 2em;
+}
+
+.map {
+  display: none;
 }
 
 .info {
@@ -430,4 +443,37 @@ main {
   margin: 0;
   font-weight: bold;
   font-size: 1rem;
+}
+
+@media(min-width: 600px) {
+  
+  .contacts-container {
+    flex-direction: row;
+    padding: 3em 2em;
+  }
+  
+  .contacts-column,
+  .contacts-column-2 {
+    width: 35%;
+  }
+  
+  .contacts-column-2 {
+    align-self: center;
+    
+  }
+  
+  .map {
+  display: unset;
+}
+  
+  
+.form h1 {
+  margin-bottom: 3em;
+}
+  
+  .info {
+    margin-top: 4em;
+text-align: right;
+  }
+
 }
