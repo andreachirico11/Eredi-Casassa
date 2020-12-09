@@ -78,7 +78,7 @@ textarea {
   .main-padding {
     padding: 3em 2.5em;
   }
-  
+
   h1 {
     font-size: 2.4rem;
     line-height: 1.5;
@@ -336,12 +336,12 @@ main {
   font-size: 1.7em;
 }
 
-.history-container img{
+.history-container img {
   display: none;
 }
 
 .history-container h1 {
- align-self: center;
+  align-self: center;
 }
 
 .history-container p {
@@ -352,24 +352,21 @@ main {
 }
 
 @media (min-width: 600px) {
-  
   .history-container {
     display: grid;
     column-gap: 10%;
     grid-template-columns: 30% 60%;
     padding: 2em;
   }
-  
-.history-container img{
-  display: unset;
-  
-}
-  
+
+  .history-container img {
+    display: unset;
+  }
+
   .history-container p {
-  grid-column: span 2;
+    grid-column: span 2;
     font-size: 1rem;
   }
-  
 }
 
 /* ---------> articles */
