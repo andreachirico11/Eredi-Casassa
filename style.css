@@ -88,10 +88,12 @@ textarea {
 /* ---------> Background */
 .bg-photo {
   background-image: url('./assets/bg-photo.png');
+  --overlay: rgba(0, 0, 0, 0);
 }
 
 .bg-photo-blurred {
   background-image: url('./assets/bg-photo-blurred.png');
+  --overlay: rgba(0, 0, 0, 0.5);
 }
 
 .background {
@@ -100,7 +102,6 @@ textarea {
   background-repeat: no-repeat;
   background-position: top;
   background-size: 50em;
-  --overlay: rgba(0, 0, 0, 0);
 }
 
 .background-overlay {
