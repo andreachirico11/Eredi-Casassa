@@ -7,12 +7,12 @@
   font-size: 400;
   color: var(--text);
   --main-shadow: 1px 1px 10px rgb(21, 15, 9, 0.5);
+  --global-margin: 1.5em;
 }
 
 body {
   background-color: var(--main-bg);
   margin: 0;
-  padding: 0;
   font-size: 16px;
   position: relative;
 }
@@ -20,11 +20,6 @@ body {
 img {
   width: 100%;
   height: auto;
-}
-
-.main-padding {
-  padding-left: 1.5em;
-  padding-right: 1.5em;
 }
 
 p {
@@ -62,6 +57,7 @@ h1 {
 
 input,
 textarea {
+  color: var(--text);
   border: 1px solid var(--text);
   box-sizing: border-box;
   border-radius: 20px;
@@ -79,10 +75,9 @@ main {
   min-height: 70%;
 }
 
-@media (min-width: 600px) {
-  .main-padding {
-    padding-left: 2.5em;
-    padding-right: 2.5em;
+@media (min-width: 700px) {
+  :root {
+    --global-margin: 2.5em;
   }
 
   h1 {
@@ -91,15 +86,9 @@ main {
   }
 }
 
-@media (min-width: 1200px) {
-  .main-padding {
-    padding: 3rem 4em;
-  }
-}
-
-@media (min-width: 1400px) {
-  .main-padding {
-    padding: 3rem 8em;
+@media (min-height: 1000px) {
+  body {
+    overflow: hidden;
   }
 }
 
@@ -155,7 +144,7 @@ main {
   );
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .background {
     background-size: 80em;
   }
@@ -187,9 +176,10 @@ main {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
   .background {
-    width: 100vw;
+    width: 1280px;
+    margin: 0 auto;
   }
   .background-overlay {
     background: -webkit-gradient(
@@ -221,6 +211,7 @@ main {
 /* ---------> Header */
 
 header {
+  width: 100%;
   min-height: 10%;
   display: flex;
   justify-content: space-between;
@@ -229,10 +220,12 @@ header {
 
 .logo {
   width: 14em;
+  margin-left: var(--global-margin);
 }
 
 header button img {
   width: 3.5em;
+  margin-right: var(--global-margin);
 }
 
 .navbar {
@@ -275,9 +268,9 @@ header button img {
   text-decoration: underline;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .logo {
-    margin-top: 3em;
+    padding-top: 3em;
     width: 25em;
   }
 
@@ -335,6 +328,8 @@ header button img {
     text-align: center;
     width: unset;
     margin: 0;
+    margin-right: var(--global-margin);
+
     display: flex;
     flex-direction: row;
     padding: 0;
@@ -358,10 +353,10 @@ footer {
 
 .footer-flex-container {
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   text-align: center;
   width: 100%;
-  justify-content: space-between;
 }
 
 .footer-left {
@@ -372,38 +367,32 @@ footer {
   display: block;
   font-size: 0.4em;
   text-align: center;
-  margin-bottom: 2em;
+  padding-bottom: 3em;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   footer p {
     font-size: 0.9rem;
+  }
+
+  .footer-left {
+    margin-bottom: 0;
+    margin-left: var(--global-margin);
+  }
+
+  .footer-right {
+    margin-right: var(--global-margin);
   }
 
   .copyright {
     font-size: 0.6em;
   }
 
-  /* .footer-content {
-    flex-direction: row;
-    margin-bottom: 0;
-  }
-  footer {
-    height: 10em;
-  }
-
-  .footer-content-left {
-    text-align: left;
-  }
-  .footer-content-right {
-    text-align: right;
-  } */
-
   .footer-flex-container {
     flex-direction: row;
     margin: 0 auto;
     justify-content: space-between;
-    min-height: 5em;
+    /* min-height: 5em; */
   }
 
   .footer-left {
@@ -415,27 +404,13 @@ footer {
   }
 }
 
-@media (min-width: 600px) {
-  /* footer {
-    height: unset;
-  }
-
-  footer p {
-    font-size: 1em;
-  }
-
-  .copyright {
-    font-size: 0.8em;
-  } */
+@media (min-width: 700px) {
 }
 
 @media (min-width: 1200px) {
 }
 
 /* ---------> History */
-main {
-  padding: 0 3em;
-}
 
 .history-container {
   text-align: center;
@@ -460,7 +435,7 @@ main {
   margin-top: 3em;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .history-container {
     display: grid;
     column-gap: 10%;
@@ -511,7 +486,7 @@ main {
   box-shadow: var(--main-shadow);
 }
 
-@media (min-widt: 600px) {
+@media (min-widt: 700px) {
   .category {
     width: 150px;
     text-align: center;
@@ -552,7 +527,7 @@ main {
   font-size: 1rem;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 700px) {
   .contacts-container {
     flex-direction: row;
     padding: 3em 2em;
