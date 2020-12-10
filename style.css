@@ -223,11 +223,6 @@ header {
   margin-left: var(--global-margin);
 }
 
-header button img {
-  width: 3.5em;
-  margin-right: var(--global-margin);
-}
-
 .navbar {
   z-index: 2;
   top: 0;
@@ -241,10 +236,15 @@ header button img {
   display: none;
 }
 
+.navbar-button-open,
 .navbar-button-close {
+  margin-right: var(--global-margin);
+  width: calc(var(--global-margin) * 2);
+}
+
+.navbar-button-close {
+  margin-top: 4em;
   display: inline-block;
-  margin-top: 5em;
-  padding-right: 1.9em;
   text-align: right;
 }
 
@@ -274,10 +274,6 @@ header button img {
     width: 25em;
   }
 
-  header button img {
-    width: 6em;
-  }
-
   .navbar {
     top: 0;
     width: 35vw;
@@ -286,8 +282,7 @@ header button img {
   }
 
   .navbar-button-close {
-    margin-top: 6em;
-    padding-right: 3rem;
+    margin-top: 7em;
   }
 
   .navbar-list {
