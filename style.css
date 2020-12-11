@@ -45,6 +45,20 @@ button:active {
   border: 0;
 }
 
+button[type=submit] {
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 1rem; 
+  transition: opacity .3s linear;
+    display: inline;
+  margin: 0;
+  padding: 0.2em 1em;
+}
+
+button[type=submit]:hover {
+  opacity: .6;
+}
+
 ul {
   list-style: none;
 }
@@ -64,16 +78,53 @@ h1 {
 }
 
 input,
-textarea {
+textarea,
+button[type=submit] {
   color: var(--text);
   border: 1px solid var(--text);
-  box-sizing: border-box;
   border-radius: 20px;
-  background: none;
+  background: none; 
+}
+
+input,
+textarea {
+  box-sizing: border-box;
   display: block;
   width: 100%;
   padding: 0.2em;
+  margin: 1em 0;
 }
+
+input[type='checkbox'] {
+  display: none;
+}
+
+label a {
+  font-weight: bolder;
+  text-decoration: underline;
+}
+
+
+label > input[type="checkbox"] + *::before {
+  content: "\00a0";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 0.1em;
+  border-color: var(--text);
+  color: var(--text);
+  margin-right: 1em;
+  line-height: 90%;
+  text-align: right;
+  cursor: pointer;
+}
+
+label > input[type="checkbox"]:checked + *::before {
+  content: "\2713";
+}
+
 
 textarea {
   height: 4rem;
@@ -547,9 +598,11 @@ footer {
   }
 }
 
-/* ---------> Contacts */
+/* ---------> Contacts&Privacy */
 
-.contacts-container {
+.contacts-container
+{
+  
   width: 100%;
   max-width: 700px;
 
@@ -566,16 +619,27 @@ footer {
 
 .contact-form {
   text-align: left;
-  height: 250px;
+  height: 300px;
 }
 
 .contacts-column h1 {
   text-align: left;
-  margin-bottom: 2em;
 }
 
 .contacts-column-2 {
   text-align: right;
+}
+
+
+.form-last-row {
+  margin-top: 1em; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-last-row label {
+  margin-right: 1em;
 }
 
 .map {
@@ -625,6 +689,18 @@ footer {
     font-size: 1rem;
   }
 }
+
+.policy-container {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 80%;
+  height: 500px;
+}
+
+.policy-container p {
+  font-size: 1rem;
+}
+
 
 /*Animations*/
 
