@@ -16,6 +16,7 @@ body {
   margin: 0;
   font-size: 16px;
   position: relative;
+  height: 100vh;
 }
 
 img {
@@ -79,7 +80,7 @@ textarea {
 }
 
 main {
-  min-height: 70%;
+  min-height: 70vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -224,7 +225,7 @@ main {
 
 header {
   width: 100%;
-  min-height: 10%;
+  min-height: 10vh;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -236,7 +237,7 @@ header {
 }
 
 .navbar {
-  z-index: 2;
+  z-index: 10;
   top: 0;
   position: absolute;
   width: 100vw;
@@ -244,7 +245,7 @@ header {
   background-color: var(--main-bg);
   opacity: 0.85;
   text-align: right;
-  right: 100;
+  right: 100vw;
   display: none;
 }
 
@@ -270,6 +271,12 @@ header {
   display: flex;
   flex-direction: column;
   padding: 0;
+}
+
+@media (max-height: 550px) and (min-width: 700px) {
+  .navbar-list {
+    margin-top: 140px;
+  }
 }
 
 .navbar-list-item {
@@ -308,10 +315,8 @@ header {
   }
 
   .navbar {
-    top: 0;
     width: 35vw;
     text-align: right;
-    display: none;
   }
 
   .navbar-list {
@@ -392,7 +397,6 @@ header {
 
 /* ---------> Footer */
 footer {
-  min-height: 20%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
