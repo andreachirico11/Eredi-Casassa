@@ -42,21 +42,27 @@
           <div class="contacts-container">
             <div class="contacts-column">
               <h1>Contattaci</h1>
-              <form action="" class="contact-form">
+              <form method="POST" class="contact-form" novalidate>
                 <label for="name">Nome</label>
-                <input type="text" id="name" />
+                <input type="text" id="name" name="name" required />
                 <label for="email">Email</label>
-                <input type="email" id="email" />
+                <input type="email" id="email" name="email" required />
                 <label for="message">Messaggio</label>
-                <textarea type="text" id="message"></textarea>
+                <textarea
+                  type="text"
+                  id="message"
+                  name="message"
+                  required
+                ></textarea>
+
                 <div class="form-last-row">
                   <label>
-                    <input type="checkbox" id="check" />
+                    <input type="checkbox" id="check" required />
                     <span>
                       Consenso <a href="./privacy.html">Privacy Policy</a>
                     </span>
                   </label>
-                  <button type="submit">Invia</button>
+                  <button type="submit" disabled>Invia</button>
                 </div>
               </form>
             </div>
@@ -88,5 +94,6 @@
       </div>
     </div>
     <script src="../javascripts/navbar.js"></script>
+    <script src="./javascripts/form.js"></script>
   </body>
 </html>

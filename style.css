@@ -45,18 +45,26 @@ button:active {
   border: 0;
 }
 
-button[type=submit] {
+button[type='submit'] {
   font-family: inherit;
   font-weight: bold;
-  font-size: 1rem; 
-  transition: opacity .3s linear;
-    display: inline;
+  font-size: 1rem;
+  transition: opacity 0.3s linear;
+  display: inline;
   margin: 0;
   padding: 0.2em 1em;
 }
 
-button[type=submit]:hover {
-  opacity: .6;
+button[type='submit']:disabled,
+button[type='submit']:disabled:hover {
+  cursor: initial;
+  color: grey;
+  border-color: grey;
+  opacity: unset;
+}
+
+button[type='submit']:hover {
+  opacity: 0.6;
 }
 
 ul {
@@ -79,11 +87,12 @@ h1 {
 
 input,
 textarea,
-button[type=submit] {
+button[type='submit'] {
   color: var(--text);
   border: 1px solid var(--text);
   border-radius: 20px;
-  background: none; 
+  background: none;
+  resize: none;
 }
 
 input,
@@ -92,7 +101,18 @@ textarea {
   display: block;
   width: 100%;
   padding: 0.2em;
+  padding-left: 0.75em;
   margin: 1em 0;
+  font-family: inherit;
+}
+
+.invalid-sub input:invalid,
+.invalid-sub textarea:invalid {
+  border: 1px solid red;
+}
+
+*:focus {
+  outline: none;
 }
 
 input[type='checkbox'] {
@@ -104,9 +124,8 @@ label a {
   text-decoration: underline;
 }
 
-
-label > input[type="checkbox"] + *::before {
-  content: "\00a0";
+label > input[type='checkbox'] + *::before {
+  content: '\00a0';
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -121,10 +140,9 @@ label > input[type="checkbox"] + *::before {
   cursor: pointer;
 }
 
-label > input[type="checkbox"]:checked + *::before {
-  content: "\2713";
+label > input[type='checkbox']:checked + *::before {
+  content: '\2713';
 }
-
 
 textarea {
   height: 4rem;
@@ -600,12 +618,9 @@ footer {
 
 /* ---------> Contacts&Privacy */
 
-.contacts-container
-{
-  
+.contacts-container {
   width: 100%;
   max-width: 700px;
-
   margin: 3em var(--global-content-margin);
 }
 
@@ -630,9 +645,8 @@ footer {
   text-align: right;
 }
 
-
 .form-last-row {
-  margin-top: 1em; 
+  margin-top: 1em;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -640,6 +654,11 @@ footer {
 
 .form-last-row label {
   margin-right: 1em;
+}
+
+.form-alert {
+  font-size: 0.6em;
+  float: right;
 }
 
 .map {
@@ -700,7 +719,6 @@ footer {
 .policy-container p {
   font-size: 1rem;
 }
-
 
 /*Animations*/
 
