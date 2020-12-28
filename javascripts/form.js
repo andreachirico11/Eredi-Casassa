@@ -1,10 +1,13 @@
 const [name, email, message, checkbox, btn] = document.forms[0];
 const form = document.getElementsByTagName('form')[0];
+
+setTimeout(() => {
+  form.reset();
+}, 500);
 form.setAttribute('action', 'https://formspree.io/f/mbjppzqd');
 
 form.onsubmit = () => {
   if (validateForm()) {
-    // clearForm();
     return true;
   }
   form.classList.add('invalid-sub');
@@ -24,21 +27,6 @@ function validateForm() {
     btn.disabled = true;
     return false;
   }
-}
-
-function onSub() {
-  if (validateForm()) {
-    clearForm();
-    return true;
-  } else {
-  }
-}
-
-function clearForm() {
-  name.value = '';
-  email.value = '';
-  message.value = '';
-  checkbox.checked = false;
 }
 
 name.addEventListener('input', validateForm);
