@@ -656,17 +656,30 @@ footer {
   margin-right: 1em;
 }
 
+.form-last-row span {
+  line-height: 1.5;
+}
+
 .form-alert {
   font-size: 0.6em;
   float: right;
 }
 
-.map {
+.gMap {
   display: none;
+  background-image: url('./assets/maps.png');
+  background-position: center;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+  margin-left: auto;
+  border-radius: 20px;
 }
-
-.map img {
-  width: 80%;
+@media (min-width: 800px) {
+  .gMap {
+    width: 250px;
+    height: 250px;
+  }
 }
 
 .info {
@@ -692,8 +705,8 @@ footer {
     align-self: center;
   }
 
-  .map {
-    display: unset;
+  .gMap {
+    display: block;
   }
 
   .form h1 {
