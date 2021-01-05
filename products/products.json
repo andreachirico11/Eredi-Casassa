@@ -1,1 +1,43 @@
-[]
+[
+    {
+        "categoryName": "marina",
+        "products": [
+            {
+                "title": "balena",
+                "imgUrl": "products/products-images/1.jpeg"
+            },
+            {
+                "title": "cannocchiale",
+                "imgUrl": "products/products-images/2.jpeg"
+            },
+            {
+                "title": "balenona",
+                "imgUrl": "products/products-images/3.jpeg"
+            },
+            {
+                "title": "areoplani",
+                "imgUrl": "products/products-images/4.jpeg"
+            },
+            {
+                "title": "balenetta",
+                "imgUrl": "products/products-images/5.jpeg"
+            },
+            {
+                "title": "casette",
+                "imgUrl": "products/products-images/6.jpeg"
+            },
+            {
+                "title": "balenetta",
+                "imgUrl": "products/products-images/5.jpeg"
+            },
+            {
+                "title": "casette",
+                "imgUrl": "products/products-images/6.jpeg"
+            }
+        ]
+    },
+    {
+        "categoryName": "lampadari",
+        "products": []
+    }
+]
