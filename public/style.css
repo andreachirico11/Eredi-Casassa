@@ -616,6 +616,11 @@ footer {
   }
 }
 
+#noProdFound {
+  width: 200px;
+  text-align: center;
+}
+
 /* ---------> Contacts&Privacy */
 
 .contacts-container {
