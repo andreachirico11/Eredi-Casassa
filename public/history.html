@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Life+Savers&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+    <title>Eredi Casassa</title>
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/8.2.3/firebase-app.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+  </head>
+  <body>
+    <div class="background bg-photo-blurred">
+      <div class="background-overlay">
+        <header class="main-padding">
+          <div class="logo">
+            <a href="index.html">
+              <img src="../assets/logo.png" alt="Eredi Casassa" />
+            </a>
+          </div>
+          <button class="navbar-button" id="navbar-toggler">
+            <img class="img-open" src="./assets/wave button.png" alt="Menu" />
+            <img
+              class="img-close"
+              src="./assets/close nav button.png"
+              alt="Menu"
+            />
+          </button>
+          <div class="navbar">
+            <ul class="navbar-list">
+              <a href="history.html" class="navbar-list-item active">Storia</a>
+              <a href="products.html" class="navbar-list-item">Articoli</a>
+              <a href="contacts.html" class="navbar-list-item">Contatti</a>
+            </ul>
+          </div>
+        </header>
+        <main>
+          <div class="history-container">
+            <h1>In Caruggio dal <span>1949</span></h1>
+            <img src="./assets/eredi.png" alt="eredi" />
+            <p>
+              Eredi Casassa è una delle botteghe più antiche di Chiavari come
+              testimonia onserva ancora molti degli arredi originali dell’epoca,
+              compreso il bellissimo bancone e le vetrinette con gli scaffali.
+              All’interno, Giulio Casassa porta avanti, con competenza, cortesia
+              e gentilezza il lavoro della sua famiglia, quello della vendita al
+              dettaglio di materiale elettrico. Ma a questa attività è riuscito
+              ad aggiungere anche un tocco d’innovazione che riscuote moltissimi
+              consensi sia tra i chiavaresi che tra i numerosi turisti. Dagli
+              Eredi Casassa si possono trovare tutti i tipi di lampadine, i
+              ricambi elettrici, il materiale, la minuteria metallica, tutto
+              l’occorrente sia per i professionisti che per il fai-da-te. In
+              più, un’accurata selezione di lampade, lampadari, oggettistica che
+              Giulio porta a Chiavari essendo in contatto con rappresentanti e
+              aziende da tutto il mondo.
+            </p>
+          </div>
+        </main>
+        <footer class="main-padding">
+          <div class="footer-flex-container">
+            <div class="footer-left">
+              <p>Via Martiri della Liberazione 97</p>
+              <p>16043 Chiavari</p>
+              <p>0185-309641</p>
+            </div>
+            <div class="footer-right">
+              <p>Orario: 9,30/12,30; 16,30/19,30</p>
+              <p>(Chiuso domenica)</p>
+            </div>
+          </div>
+          <span class="copyright">@copyright Casassa</span>
+        </footer>
+      </div>
+    </div>
+    <script src="../javascripts/navbar.js"></script>
+  </body>
+</html>
