@@ -42,8 +42,27 @@
             </ul>
           </div>
         </header>
-        <main>
-          <div class="categories-grid" id="products-container"></div>
+        <main style="flex-direction: column">
+          <div class="categories">
+            <div class="categories-header">
+              <h1 id="category-title" class="category-title"></h1>
+              <a href="products.html">
+                <svg
+                  width="179"
+                  height="141"
+                  viewBox="0 0 179 141"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M84.0391 32.4401H119.788C127.418 32.4276 134.975 33.8092 142.025 36.5054C149.076 39.2016 155.479 43.1593 160.867 48.1506H160.991C169.121 55.6826 174.653 65.2708 176.89 75.7051C179.126 86.1394 177.968 96.9521 173.559 106.778C169.151 116.605 161.69 125.004 152.12 130.917C142.549 136.829 131.297 139.99 119.784 140H48.7892V114.2H119.784C128.099 114.2 135.672 110.989 141.257 105.943C144.059 103.353 146.279 100.278 147.792 96.894C149.304 93.5098 150.078 89.883 150.071 86.2216C150.097 82.5407 149.331 78.8917 147.818 75.4863C146.306 72.081 144.076 68.9871 141.259 66.3842C138.442 63.7814 135.093 61.7214 131.407 60.3239C127.721 58.9264 123.772 58.2191 119.788 58.2431H84.0391V88.5145L42.9594 66.7288L2 44.8255L42.956 22.9128L84.0357 1L84.0391 32.4401Z"
+                    stroke="#F3E3CF"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div class="categories-grid" id="products-container"></div>
+          </div>
         </main>
         <footer class="main-padding">
           <div class="footer-flex-container">
@@ -65,6 +84,11 @@
       <div class="category">
         <img class="category-img" src="" alt="" />
         <span class="category-label"></span>
+      </div>
+    </template>
+    <template id="no-product-found">
+      <div class="no-product-found">
+        <h2>Non ci sono articoli in questa categoria....</h2>
       </div>
     </template>
     <script src="javascripts/navbar.js"></script>

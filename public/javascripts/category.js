@@ -1,4 +1,6 @@
 const categoryTemplate = document.getElementById('category-template');
+const noProductFoundTemplate = document.getElementById('no-product-found');
+const categoryTitle = document.getElementById('category-title');
 const categoryParam = window.location.href.split('?')[1];
 const container = document.getElementById('products-container');
 const url = '../products/products.json';
@@ -29,54 +31,17 @@ function addCategoryProductsToView(products) {
   if (!products || products.length === 0) {
     return noProductFound();
   }
+  categoryTitle.textContent =
+    categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
   products.forEach((prod) => {
     container.appendChild(configureProduct(prod));
   });
 }
 
 function noProductFound() {
-  const template = document.createElement('h1');
-  template.id = 'noProdFound';
-  template.textContent = 'No Product Found';
-  container.appendChild(template);
+  container.appendChild(noProductFoundTemplate.content.cloneNode(true));
 }
 
 function redirectToProducts() {
   window.location.href = window.location.origin + '/products.html';
 }
-
-// function addCategoryProductsToView(category) {
-//   const products = category.products;
-//   if (products.length === 0) {
-//     noProductFound();
-//   }
-//   products.forEach((prod) => {
-//     container.appendChild(configureProduct(prod));
-//   });
-// }
-
-// function extractCategoryFromDb(db) {
-//   return db.filter((category) => category.categoryName === categoryParam)[0];
-// }
-
-// window.onload = () => {
-//   fetch(url)
-//     .then((res) => {
-//       if (res.ok) {
-//         return res.json();
-//       }
-//       throw new Error();
-//     })
-//     .then((db) => {
-//       if (db) {
-//         const category = extractCategoryFromDb(db);
-//         if (!category) {
-//           redirectToProducts();
-//         }
-//         addCategoryProductsToView(category);
-//       }
-//     })
-//     .catch((err) => {
-//       redirectToProducts();
-//     });
-// };

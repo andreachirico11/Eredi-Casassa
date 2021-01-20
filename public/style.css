@@ -597,6 +597,25 @@ footer {
   scrollbar-width: none; /* Firefox */
 }
 
+.categories-header {
+  /* margin-top: 2em;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  justify-content: space-between; */
+}
+
+.categories-header h1 {
+  margin: 0;
+  margin-left: var(--global-margin);
+}
+
+.categories-header svg {
+  height: 30px;
+  width: auto;
+  margin-right: var(--global-margin);
+}
+
 .category {
   width: 100px;
   text-align: center;
@@ -614,11 +633,6 @@ footer {
   .categories-grid {
     column-gap: 5em;
   }
-}
-
-#noProdFound {
-  width: 200px;
-  text-align: center;
 }
 
 /* ---------> Contacts&Privacy */
