@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
+    <script src="javascripts/firebase-init.js"></script>
+    <style>
+      .content {
+        margin: 0 auto;
+        width: 80%;
+        text-align: center;
+      }
+      .admin-table {
+        width: 100%;
+        margin-top: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <h1>Pagina Amministratore</h1>
+      <h2>Seleziona la categoria</h2>
+      <select>
+        <option selected disabled>Seleziona</option>
+      </select>
+      <table class="admin-table">
+        <tr>
+          <th>Titolo</th>
+          <th>Immagine</th>
+          <th>Azioni</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+  <script>
+    const db = firebase.database();
+    const select = document.getElementsByTagName('select')[0];
+    const table = document.getElementsByTagName('table')[0];
+
+    db.ref('categories').on(
+      'value',
+      (categoriesSnapshot) => onFetchCategories(categoriesSnapshot.val()),
+      console.error
+    );
+
+    function onFetchCategories(categoriesSnapshot) {
+      categoriesSnapshot.forEach((category) => {
+        const option = createHtmlOption(category);
+        select.appendChild(option);
+      });
+      select.addEventListener('change', onSelectChange);
+    }
+
+    function createHtmlOption(value) {
+      const option = document.createElement('option');
+      option.value = value;
+      option.innerText = value;
+      return option;
+    }
+
+    function onSelectChange() {
+      db.ref(this.value).on(
+        'value',
+        (category) => categoryLoaded(category.val()),
+        console.error
+      );
+    }
+
+    function categoryLoaded(category) {
+      if (category) {
+        addCategoryToTable(category);
+      }
+    }
+
+    function addCategoryToTable(category) {
+      category.forEach((object) => {
+        table.appendChild(createRowWithCells(object));
+      });
+    }
+
+    function createRowWithCells(obj) {
+      const row = document.createElement('tr');
+      const cell1 = document.createElement('td');
+      cell1.innerText = obj.title;
+      row.appendChild(cell1);
+      const cell2 = document.createElement('td');
+      const img = document.createElement('img');
+      img.style.width = '50px';
+      img.style.height = 'auto';
+      img.src = obj.imgUrl;
+      cell2.appendChild(img);
+      row.appendChild(cell2);
+      return row;
+    }
+  </script>
+</html>
