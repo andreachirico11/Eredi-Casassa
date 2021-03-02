@@ -1,13 +1,22 @@
 const db = firebase.database();
+const storage = firebase.storage();
 const select = document.getElementsByTagName('select')[0];
 const table = document.getElementsByTagName('table')[0];
 const empty = document.getElementsByClassName('displayNone')[0];
-
+const progressBar = document.getElementById('uploadBar');
+const [nameInput, fileInput] = document.getElementsByTagName('input');
+const formButton = document.getElementById('admin-form-button');
+let task;
+/**
+ *
+ */
 db.ref('categories').on(
   'value',
   (categoriesSnapshot) => onFetchCategories(categoriesSnapshot.val()),
   console.error
 );
+
+formButton.addEventListener('click', () => load());
 
 function onFetchCategories(categoriesSnapshot) {
   categoriesSnapshot.forEach((category) => {
@@ -71,11 +80,37 @@ function removeAllRows() {
     });
 }
 
-document
-  .getElementById('admin-form-button')
-  .addEventListener('click', () => load());
-
 function load() {
-  const form = document.getElementById('admin-form');
-  console.log(form.value);
+  const title = nameInput.value;
+  const file = fileInput.files[0];
+  const category = select.value;
+  const fileUrl = category + '/' + title + /\.(.+)/.exec(file.name)[0];
+  const storageRef = storage.ref(fileUrl);
+  task = storageRef.put(file);
+  task.on('state_changed', onLoading, console.error, onLoadingComplete);
+}
+
+function onLoading(snapshot) {
+  progressBar.classList.remove('displayNone');
+  const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+  progressBar.value = percentage;
+}
+
+function onLoadingComplete() {
+  progressBar.classList.add('displayNone');
+  progressBar.value = 0;
+  task.snapshot.ref.getDownloadURL().then(saveFileOnDb).catch(console.error);
+}
+
+function saveFileOnDb(imgUrl) {
+  const title = nameInput.value;
+  const category = select.value;
+  db.ref(category + '/').push(
+    {
+      imgUrl,
+      title,
+    },
+    console.log
+  );
+  // da finire
 }
