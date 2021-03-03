@@ -4,9 +4,8 @@ const select = document.getElementsByTagName('select')[0];
 const table = document.getElementsByTagName('table')[0];
 const empty = document.getElementsByClassName('displayNone')[0];
 const progressBar = document.getElementById('uploadBar');
-const [nameInput, fileInput] = document.getElementsByTagName('input');
 const formButton = document.getElementById('admin-form-button');
-let task;
+let task, selectedCategory;
 /**
  *
  */
@@ -16,7 +15,13 @@ db.ref('categories').on(
   console.error
 );
 
-formButton.addEventListener('click', () => load());
+formButton.addEventListener('click', () => {
+  if (loadFormValidation()) {
+    const storageRef = storage.ref(createFileUrl());
+    task = storageRef.put(getFile());
+    task.on('state_changed', onLoading, console.error, onLoadingComplete);
+  }
+});
 
 function onFetchCategories(categoriesSnapshot) {
   categoriesSnapshot.forEach((category) => {
@@ -34,14 +39,19 @@ function createHtmlOption(value) {
 }
 
 function onSelectChange() {
-  db.ref(this.value).on(
+  selectedCategory = this.value;
+  loadCategoryToTable();
+}
+
+function loadCategoryToTable() {
+  db.ref(selectedCategory).on(
     'value',
-    (category) => categoryLoaded(category.val()),
+    (category) => tableLoader(category.val()),
     console.error
   );
 }
 
-function categoryLoaded(category) {
+function tableLoader(category) {
   removeAllRows();
   if (category) {
     empty.classList.add('displayNone');
@@ -52,9 +62,9 @@ function categoryLoaded(category) {
 }
 
 function addCategoryToTable(category) {
-  category.forEach((object) => {
-    table.appendChild(createRowWithCells(object));
-  });
+  for (const key in category) {
+    table.appendChild(createRowWithCells(category[key]));
+  }
 }
 
 function createRowWithCells(obj) {
@@ -80,14 +90,18 @@ function removeAllRows() {
     });
 }
 
-function load() {
-  const title = nameInput.value;
-  const file = fileInput.files[0];
-  const category = select.value;
-  const fileUrl = category + '/' + title + /\.(.+)/.exec(file.name)[0];
-  const storageRef = storage.ref(fileUrl);
-  task = storageRef.put(file);
-  task.on('state_changed', onLoading, console.error, onLoadingComplete);
+function createFileUrl() {
+  return (
+    selectedCategory + '/' + getFileTitle() + /\.(.+)/.exec(getFile().name)[0]
+  );
+}
+
+function getFileTitle() {
+  return document.getElementsByTagName('input')[0].value;
+}
+
+function getFile() {
+  return document.getElementsByTagName('input')[1].files[0];
 }
 
 function onLoading(snapshot) {
@@ -99,18 +113,32 @@ function onLoading(snapshot) {
 function onLoadingComplete() {
   progressBar.classList.add('displayNone');
   progressBar.value = 0;
-  task.snapshot.ref.getDownloadURL().then(saveFileOnDb).catch(console.error);
+  task.snapshot.ref
+    .getDownloadURL()
+    .then(saveReferenceOnDb)
+    .catch(console.error);
 }
 
-function saveFileOnDb(imgUrl) {
-  const title = nameInput.value;
-  const category = select.value;
-  db.ref(category + '/').push(
+function saveReferenceOnDb(imgUrl) {
+  db.ref(selectedCategory + '/').push(
     {
       imgUrl,
-      title,
+      title: getFileTitle(),
     },
-    console.log
+    function () {
+      task = null;
+    }
   );
-  // da finire
+}
+
+function loadFormValidation() {
+  if (!selectedCategory) {
+    alert('manca la categoria');
+    return false;
+  }
+  if (getFile() && getFileTitle()) {
+    return true;
+  }
+  alert('e compilali sti campi');
+  return false;
 }

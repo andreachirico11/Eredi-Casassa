@@ -19,23 +19,23 @@ database.ref(categoryParam).on(
   }
 );
 
-function configureProduct(product) {
-  const category = categoryTemplate.content.cloneNode(true);
-  category.querySelectorAll('img')[0].src = product.imgUrl;
-  category.querySelectorAll('img')[0].alt = product.title;
-  category.querySelectorAll('span')[0].textContent = product.title;
-  return category;
-}
-
 function addCategoryProductsToView(products) {
   if (!products || products.length === 0) {
     return noProductFound();
   }
   categoryTitle.textContent =
     categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
-  products.forEach((prod) => {
-    container.appendChild(configureProduct(prod));
-  });
+  for (const key in products) {
+    container.appendChild(generateProdHtml(products[key]));
+  }
+}
+
+function generateProdHtml(product) {
+  const prodTemplate = categoryTemplate.content.cloneNode(true);
+  prodTemplate.querySelectorAll('img')[0].src = product.imgUrl;
+  prodTemplate.querySelectorAll('img')[0].alt = product.title;
+  prodTemplate.querySelectorAll('span')[0].textContent = product.title;
+  return prodTemplate;
 }
 
 function noProductFound() {
