@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Life+Savers&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Life+Savers&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css" />
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <script defer src="/__/firebase/8.2.3/firebase-auth.js"></script>
+    <script src="javascripts/firebase-init.js"></script>
     <title>Eredi Casassa</title>
   </head>
   <body>
@@ -22,19 +22,13 @@
           </div>
           <button class="navbar-button" id="navbar-toggler">
             <img class="img-open" src="./assets/wave button.png" alt="Menu" />
-            <img
-              class="img-close"
-              src="./assets/close nav button.png"
-              alt="Menu"
-            />
+            <img class="img-close" src="./assets/close nav button.png" alt="Menu" />
           </button>
           <div class="navbar">
             <ul class="navbar-list">
               <a href="history.html" class="navbar-list-item">Storia</a>
               <a href="products.html" class="navbar-list-item">Articoli</a>
-              <a href="contacts.html" class="navbar-list-item active"
-                >Contatti</a
-              >
+              <a href="contacts.html" class="navbar-list-item active">Contatti</a>
             </ul>
           </div>
         </header>
@@ -48,18 +42,11 @@
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" required />
                 <label for="message">Messaggio</label>
-                <textarea
-                  type="text"
-                  id="message"
-                  name="message"
-                  required
-                ></textarea>
+                <textarea type="text" id="message" name="message" required></textarea>
                 <div class="form-last-row">
                   <label>
                     <input type="checkbox" id="check" required />
-                    <span>
-                      Consenso <a href="./privacy.html">Privacy Policy</a>
-                    </span>
+                    <span> Consenso <a href="./privacy.html">Privacy Policy</a> </span>
                   </label>
                   <button type="submit" disabled>Invia</button>
                 </div>
@@ -86,7 +73,7 @@
               <p>(Chiuso domenica)</p>
             </div>
           </div>
-          <span class="copyright">@copyright Casassa</span>
+          <span class="copyright" id="casassa">@copyright Casassa</span>
         </footer>
       </div>
     </div>

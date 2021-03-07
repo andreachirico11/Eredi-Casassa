@@ -5,18 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
-    <script
-      defer
-      src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"
-    ></script>
-    <script
-      defer
-      src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"
-    ></script>
-    <script
-      defer
-      src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"
-    ></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <script defer src="/__/firebase/8.2.3/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
     <script defer src="javascripts/firebase-init.js"></script>
     <style>
       .admin .content {
@@ -50,7 +42,7 @@
     <div class="content">
       <div class="header">
         <div class="col">
-          <h1>Pagina Amministratore</h1>
+          <h1>Pagina Amministratore <button id="logout">Logout</button></h1>
           <h2>Seleziona la categoria</h2>
           <select>
             <option selected disabled>Seleziona</option>
@@ -62,12 +54,7 @@
             <input type="text" placeholder="titolo" />
             <input type="file" />
             <button id="admin-form-button">Carica</button>
-            <progress
-              value="0"
-              max="100"
-              id="uploadBar"
-              class="displayNone"
-            ></progress>
+            <progress value="0" max="100" id="uploadBar" class="displayNone"></progress>
           </div>
         </div>
       </div>
