@@ -31,7 +31,7 @@ firebase.auth().onAuthStateChanged(function (user) {
       if (loadFormValidation()) {
         const storageRef = storage.ref(createFileUrl());
         task = storageRef.put(getFile());
-        task.on('state_changed', onLoading, console.error, onLoadingComplete);
+        task.on('state_changed', onLoading, onLoadingError, onLoadingComplete);
       }
     });
 
@@ -43,13 +43,6 @@ firebase.auth().onAuthStateChanged(function (user) {
       select.addEventListener('change', onSelectChange);
     }
 
-    function createHtmlOption(value) {
-      const option = document.createElement('option');
-      option.value = value;
-      option.innerText = value;
-      return option;
-    }
-
     function onSelectChange() {
       selectedCategory = this.value;
       loadCategoryToTable();
@@ -57,6 +50,57 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     function loadCategoryToTable() {
       db.ref(selectedCategory).on('value', (category) => tableLoader(category.val()), console.error);
+    }
+
+    function onLoading(snapshot) {
+      progressBar.classList.remove('displayNone');
+      const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      progressBar.value = percentage;
+    }
+
+    function onLoadingError(err) {
+      alert('Immagine non salvata');
+      console.error(err);
+    }
+
+    function onLoadingComplete() {
+      progressBar.classList.add('displayNone');
+      progressBar.value = 0;
+      task.snapshot.ref
+        .getDownloadURL()
+        .then(saveReferenceOnDb)
+        .then((saved) => {
+          confirm('Salvato');
+          console.log(saved);
+        })
+        .catch((err) => {
+          alert('Non salvato su Db');
+          console.error(err);
+        });
+    }
+
+    function saveReferenceOnDb(imgUrl) {
+      return db.ref(selectedCategory + '/').push(
+        {
+          imgUrl,
+          title: getFileTitle(),
+        },
+        function () {
+          task = null;
+        }
+      );
+    }
+
+    function loadFormValidation() {
+      if (!selectedCategory) {
+        alert('manca la categoria');
+        return false;
+      }
+      if (getFile() && getFileTitle()) {
+        return true;
+      }
+      alert('e compilali sti campi');
+      return false;
     }
 
     function tableLoader(category) {
@@ -73,6 +117,13 @@ firebase.auth().onAuthStateChanged(function (user) {
       for (const key in category) {
         table.appendChild(createRowWithCells(category[key]));
       }
+    }
+
+    function createHtmlOption(value) {
+      const option = document.createElement('option');
+      option.value = value;
+      option.innerText = value;
+      return option;
     }
 
     function createRowWithCells(obj) {
@@ -108,42 +159,6 @@ firebase.auth().onAuthStateChanged(function (user) {
 
     function getFile() {
       return document.getElementsByTagName('input')[1].files[0];
-    }
-
-    function onLoading(snapshot) {
-      progressBar.classList.remove('displayNone');
-      const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      progressBar.value = percentage;
-    }
-
-    function onLoadingComplete() {
-      progressBar.classList.add('displayNone');
-      progressBar.value = 0;
-      task.snapshot.ref.getDownloadURL().then(saveReferenceOnDb).catch(console.error);
-    }
-
-    function saveReferenceOnDb(imgUrl) {
-      db.ref(selectedCategory + '/').push(
-        {
-          imgUrl,
-          title: getFileTitle(),
-        },
-        function () {
-          task = null;
-        }
-      );
-    }
-
-    function loadFormValidation() {
-      if (!selectedCategory) {
-        alert('manca la categoria');
-        return false;
-      }
-      if (getFile() && getFileTitle()) {
-        return true;
-      }
-      alert('e compilali sti campi');
-      return false;
     }
   } else {
     redirectToHome();
