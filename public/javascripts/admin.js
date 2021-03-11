@@ -1,3 +1,8 @@
+if (!sessionStorage.getItem('isAuthenticated') === 'true') {
+  redirectToHome();
+  console.log('guarded');
+}
+
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     const db = firebase.database();

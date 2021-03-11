@@ -44,6 +44,7 @@ function access(n, e) {
     .auth()
     .signInWithEmailAndPassword(n, e)
     .then((userCredential) => {
+      sessionStorage.setItem('isAuthenticated', 'true');
       window.location.href = window.location.origin + '/admin.html';
     })
     .catch((error) => {
