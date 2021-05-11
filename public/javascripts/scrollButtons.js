@@ -1,7 +1,7 @@
 const [scrollLeft, scrollRight] = Array.from(document.getElementsByClassName('scroll-btn')).map(
   (div) => div.children[0]
 );
-const grid = document.getElementsByClassName('categories-grid')[0];
+const grid = document.getElementsByClassName('articles-grid')[0];
 const speed = 70,
   distance = 150,
   step = 30;

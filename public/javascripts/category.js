@@ -13,6 +13,7 @@ database.ref(categoryParam).on(
       return redirectToProducts();
     }
     addCategoryProductsToView(fetchedProducts.val());
+    checkForButtons(); // da scrollButton.js
   },
   (err) => {
     redirectToProducts();
@@ -20,10 +21,10 @@ database.ref(categoryParam).on(
 );
 
 function addCategoryProductsToView(products) {
+  categoryTitle.textContent = categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
   if (!products || products.length === 0) {
     return noProductFound();
   }
-  categoryTitle.textContent = categoryParam.charAt(0).toUpperCase() + categoryParam.slice(1);
   for (const key in products) {
     container.appendChild(generateProdHtml(products[key]));
   }

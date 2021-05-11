@@ -342,11 +342,7 @@ header {
   padding: 0;
 }
 
-@media (max-height: 550px) and (min-width: 700px) {
-  .navbar-list {
-    margin-top: 140px;
-  }
-}
+
 
 .navbar-list-item {
   font-size: 1.9rem;
@@ -375,6 +371,18 @@ header {
 .active {
   font-weight: bold;
   transform: scale(1.2);
+}
+
+@media (max-width: 350px) {
+  .logo {
+    width: 11em;
+  }
+}
+
+@media (max-height: 550px) and (min-width: 700px) {
+  .navbar-list {
+    margin-top: 140px;
+  }
 }
 
 @media (min-width: 700px) {
@@ -576,7 +584,7 @@ footer {
 
 /* ---------> articles */
 
-.categories-grid {
+.articles-grid {
   display: grid;
   column-gap: 3em;
   row-gap: 4em;
@@ -588,24 +596,40 @@ footer {
   margin: 6em 0
 }
 
-.categories-grid::-webkit-scrollbar {
+.articles-grid::-webkit-scrollbar {
   display: none; /* Chrome etc*/
 }
 
-.categories-grid {
+.articles-grid {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+.product-grid {
+  margin-top: 1em;
+}
 
-.categories-header h1 {
-  margin: 0;
+.categories-header {
   margin-left: var(--global-margin);
+  margin-right: var(--global-margin);
+  display: flex;
+  align-items: center;
+  margin-top: 5em;
 }
 
 .categories-header svg {
-  height: 30px;
-  width: auto;
+  width: 20px;
   margin-right: var(--global-margin);
+  transition: transform .4s;
+}
+
+.categories-header svg{
+  width: 20px;
+  margin-right: var(--global-margin);
+}
+
+.categories-header svg:hover  {
+  transform: scale(1.3);
+
 }
 
 .scroll-btn {
@@ -615,7 +639,7 @@ footer {
 
 .scroll-btn svg {
   height: 40px;
-  transition: transform .4s; 
+  transition: transform .4s;
 }
 
 .scroll-btn svg:hover {
@@ -631,11 +655,11 @@ footer {
 .category {
   width: 130px;
   text-align: center;
-  cursor: pointer;
 }
 
 .category a {
   display: block;
+  cursor: pointer;
 }
 
 
@@ -653,7 +677,7 @@ footer {
   transition: transform .4s; 
 }
 
-.category-img:hover {
+.category-img-animation:hover {
   transform: scale(1.1);
 }
 

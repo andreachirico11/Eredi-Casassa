@@ -45,26 +45,40 @@
             </ul>
           </div>
         </header>
-        <main style="flex-direction: column">
-          <div class="categories">
-            <div class="categories-header">
-              <h1 id="category-title" class="category-title"></h1>
-              <a href="products.html">
-                <svg
-                  width="179"
-                  height="141"
-                  viewBox="0 0 179 141"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M84.0391 32.4401H119.788C127.418 32.4276 134.975 33.8092 142.025 36.5054C149.076 39.2016 155.479 43.1593 160.867 48.1506H160.991C169.121 55.6826 174.653 65.2708 176.89 75.7051C179.126 86.1394 177.968 96.9521 173.559 106.778C169.151 116.605 161.69 125.004 152.12 130.917C142.549 136.829 131.297 139.99 119.784 140H48.7892V114.2H119.784C128.099 114.2 135.672 110.989 141.257 105.943C144.059 103.353 146.279 100.278 147.792 96.894C149.304 93.5098 150.078 89.883 150.071 86.2216C150.097 82.5407 149.331 78.8917 147.818 75.4863C146.306 72.081 144.076 68.9871 141.259 66.3842C138.442 63.7814 135.093 61.7214 131.407 60.3239C127.721 58.9264 123.772 58.2191 119.788 58.2431H84.0391V88.5145L42.9594 66.7288L2 44.8255L42.956 22.9128L84.0357 1L84.0391 32.4401Z"
-                    stroke="#F3E3CF"
-                  />
-                </svg>
-              </a>
-            </div>
-            <div class="categories-grid" id="products-container"></div>
+        <div class="categories-header">
+          <a href="products.html">
+            <svg viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M0.610403 4.6104C0.395235 4.82557 0.395235 5.17443 0.610403 5.3896L4.11677 8.89597C4.33194 9.11114 4.6808 9.11114 4.89597 8.89597C5.11114 8.6808 5.11114 8.33194 4.89597 8.11678L1.77919 5L4.89597 1.88323C5.11114 1.66806 5.11114 1.3192 4.89597 1.10403C4.6808 0.888863 4.33194 0.888863 4.11677 1.10403L0.610403 4.6104ZM18 4.44903L1 4.44903L1 5.55097L18 5.55097L18 4.44903Z"
+                fill="#F3E3CF"
+              />
+            </svg>
+          </a>
+          <h1 id="category-title" class="category-title"></h1>
+        </div>
+        <main>
+          <div class="scroll-btn scroll-btn-left">
+            <svg
+              width="25"
+              height="99"
+              viewBox="0 0 25 99"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M23.4541 98.3362L1.09329 49.4527L24.0006 0.32785" stroke="#F3E3CF" />
+            </svg>
+          </div>
+          <div class="articles-grid product-grid" id="products-container"></div>
+          <div class="scroll-btn scroll-btn-right">
+            <svg
+              width="25"
+              height="99"
+              viewBox="0 0 25 99"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M23.4541 98.3362L1.09329 49.4527L24.0006 0.32785" stroke="#F3E3CF" />
+            </svg>
           </div>
         </main>
         <footer class="main-padding">
@@ -85,17 +99,19 @@
     </div>
     <template id="category-template">
       <div class="category">
-        <img class="category-img" src="" alt="" />
+        <div class="category-img-container">
+          <img class="category-img" src="" alt="" />
+        </div>
         <span class="category-label"></span>
       </div>
     </template>
     <template id="no-product-found">
-      <div class="no-product-found">
+      <div class="no-product-found" style="text-align: center">
         <h2>Non ci sono articoli in questa categoria....</h2>
       </div>
     </template>
     <script src="javascripts/navbar.js"></script>
-    <script src="javascripts/category.js"></script>
     <script src="javascripts/scrollButtons.js"></script>
+    <script src="javascripts/category.js"></script>
   </body>
 </html>
