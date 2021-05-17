@@ -539,7 +539,7 @@ footer {
   padding: var(--global-content-margin);
 }
 
-.history-container span {
+.history-container .year {
   font-size: 1.7em;
 }
 

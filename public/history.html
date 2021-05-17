@@ -13,8 +13,12 @@
     <meta name="theme-color" content="#ffffff" />
     <!-- ICON -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Life+Savers&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Life+Savers&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="../style.css" />
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
     <title>Eredi Casassa</title>
   </head>
   <body>
@@ -32,30 +36,25 @@
           </button>
           <div class="navbar">
             <ul class="navbar-list">
-              <a href="history.html" class="navbar-list-item active">Storia</a>
-              <a href="products.html" class="navbar-list-item">Articoli</a>
-              <a href="contacts.html" class="navbar-list-item">Contatti</a>
+              <a href="history.html" class="navbar-list-item"><span id="i18n-history"></span></a>
+              <a href="products.html" class="navbar-list-item"><span id="i18n-articles"></span></a>
+              <a href="contacts.html" class="navbar-list-item"><span id="i18n-contacts"></span></a>
             </ul>
           </div>
         </header>
         <main>
           <div class="history-container">
-            <h1>In Caruggio dal <span>1949</span></h1>
+            <h1>
+              <span id="i18n-title"></span>
+              <span class="year">1949</span>
+            </h1>
             <img src="./assets/eredi.png" alt="eredi" />
             <p>
-              Eredi Casassa è una delle botteghe più antiche di Chiavari come testimonia onserva ancora molti degli
-              arredi originali dell’epoca, compreso il bellissimo bancone e le vetrinette con gli scaffali. All’interno,
-              Giulio Casassa porta avanti, con competenza, cortesia e gentilezza il lavoro della sua famiglia, quello
-              della vendita al dettaglio di materiale elettrico. Ma a questa attività è riuscito ad aggiungere anche un
-              tocco d’innovazione che riscuote moltissimi consensi sia tra i chiavaresi che tra i numerosi turisti.
-              Dagli Eredi Casassa si possono trovare tutti i tipi di lampadine, i ricambi elettrici, il materiale, la
-              minuteria metallica, tutto l’occorrente sia per i professionisti che per il fai-da-te. In più, un’accurata
-              selezione di lampade, lampadari, oggettistica che Giulio porta a Chiavari essendo in contatto con
-              rappresentanti e aziende da tutto il mondo.
+              <span id="i18n-paragraph"></span>
             </p>
           </div>
         </main>
-        <footer class="main-padding">
+        <footer>
           <div class="footer-flex-container">
             <div class="footer-left">
               <p>Via Martiri della Liberazione 97</p>
@@ -63,14 +62,22 @@
               <p>0185-309641</p>
             </div>
             <div class="footer-right">
-              <p>Orario: 9,30/12,30; 16,30/19,30</p>
-              <p>(Chiuso domenica)</p>
+              <p>
+                <span id="i18n-hour"></span>
+                : 9,30/12,30; 16,30/19,30
+              </p>
+              <p>
+                (
+                <span id="i18n-closureDay"></span>
+                )
+              </p>
             </div>
           </div>
-          <span class="copyright">@copyright Casassa</span>
+          <span class="copyright">@Copyright Casassa</span>
         </footer>
       </div>
     </div>
+    <script src="./javascripts/i18n.js"></script>
     <script src="../javascripts/navbar.js"></script>
   </body>
 </html>

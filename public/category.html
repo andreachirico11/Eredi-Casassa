@@ -18,6 +18,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../style.css" />
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
     <title>Eredi Casassa</title>
     <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
@@ -39,9 +40,9 @@
           </button>
           <div class="navbar">
             <ul class="navbar-list">
-              <a href="history.html" class="navbar-list-item">Storia</a>
-              <a href="products.html" class="navbar-list-item active">Articoli</a>
-              <a href="contacts.html" class="navbar-list-item">Contatti</a>
+              <a href="history.html" class="navbar-list-item"><span id="i18n-history"></span></a>
+              <a href="products.html" class="navbar-list-item"><span id="i18n-articles"></span></a>
+              <a href="contacts.html" class="navbar-list-item"><span id="i18n-contacts"></span></a>
             </ul>
           </div>
         </header>
@@ -81,7 +82,7 @@
             </svg>
           </div>
         </main>
-        <footer class="main-padding">
+        <footer>
           <div class="footer-flex-container">
             <div class="footer-left">
               <p>Via Martiri della Liberazione 97</p>
@@ -89,11 +90,18 @@
               <p>0185-309641</p>
             </div>
             <div class="footer-right">
-              <p>Orario: 9,30/12,30; 16,30/19,30</p>
-              <p>(Chiuso domenica)</p>
+              <p>
+                <span id="i18n-hour"></span>
+                : 9,30/12,30; 16,30/19,30
+              </p>
+              <p>
+                (
+                <span id="i18n-closureDay"></span>
+                )
+              </p>
             </div>
           </div>
-          <span class="copyright">@copyright Casassa</span>
+          <span class="copyright">@Copyright Casassa</span>
         </footer>
       </div>
     </div>
@@ -107,9 +115,13 @@
     </template>
     <template id="no-product-found">
       <div class="no-product-found" style="text-align: center">
-        <h2>Non ci sono articoli in questa categoria....</h2>
+        <h2>
+          <span id="i18n-noProds"></span>
+          ...
+        </h2>
       </div>
     </template>
+    <script src="./javascripts/i18n.js"></script>
     <script src="javascripts/navbar.js"></script>
     <script src="javascripts/scrollButtons.js"></script>
     <script src="javascripts/category.js"></script>
