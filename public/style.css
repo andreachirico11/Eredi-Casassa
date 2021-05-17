@@ -596,10 +596,12 @@ footer {
   margin: 6em 0
 }
 
+.policy-container::-webkit-scrollbar,
 .articles-grid::-webkit-scrollbar {
   display: none; /* Chrome etc*/
 }
 
+.policy-container,
 .articles-grid {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
