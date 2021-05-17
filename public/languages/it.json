@@ -24,7 +24,7 @@
         "noProds": "Non ci sono articoli in questa categoria"
     },
     "contacts": {
-        "title": "Contattaci",
+        "form-title": "Contattaci",
         "form1": "Nome",
         "form2": "Email",
         "form3": "Messaggio",

@@ -1,4 +1,4 @@
-const language = 'it';
+const language = 'en';
 let t;
 
 getLanguageFile(language)
@@ -35,7 +35,7 @@ function translateAll() {
   translateIfExists(getById('cat7'), t('products.cat7'));
   translateIfExists(getById('cat8'), t('products.cat8'));
   translateIfExists(getById('noProds'), t('products.noProds'));
-  translateIfExists(getById('title'), t('contacts.title'));
+  translateIfExists(getById('form-title'), t('contacts.title'));
   translateIfExists(getById('form1'), t('contacts.form1'));
   translateIfExists(getById('form2'), t('contacts.form2'));
   translateIfExists(getById('form3'), t('contacts.form3'));

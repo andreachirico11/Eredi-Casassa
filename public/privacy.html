@@ -17,6 +17,7 @@
       href="https://fonts.googleapis.com/css2?family=Life+Savers&display=swap"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
     <link rel="stylesheet" href="../style.css" />
     <title>Eredi Casassa</title>
   </head>
@@ -35,9 +36,9 @@
           </button>
           <div class="navbar">
             <ul class="navbar-list">
-              <a href="history.html" class="navbar-list-item">Storia</a>
-              <a href="products.html" class="navbar-list-item">Articoli</a>
-              <a href="contacts.html" class="navbar-list-item active">Contatti</a>
+              <a href="history.html" class="navbar-list-item"><span id="i18n-history"></span></a>
+              <a href="products.html" class="navbar-list-item"><span id="i18n-articles"></span></a>
+              <a href="contacts.html" class="navbar-list-item"><span id="i18n-contacts"></span></a>
             </ul>
           </div>
         </header>
@@ -293,7 +294,7 @@
             <br />
           </div>
         </main>
-        <footer class="main-padding">
+        <footer>
           <div class="footer-flex-container">
             <div class="footer-left">
               <p>Via Martiri della Liberazione 97</p>
@@ -301,14 +302,22 @@
               <p>0185-309641</p>
             </div>
             <div class="footer-right">
-              <p>Orario: 9,30/12,30; 16,30/19,30</p>
-              <p>(Chiuso domenica)</p>
+              <p>
+                <span id="i18n-hour"></span>
+                : 9,30/12,30; 16,30/19,30
+              </p>
+              <p>
+                (
+                <span id="i18n-closureDay"></span>
+                )
+              </p>
             </div>
           </div>
-          <span class="copyright">@copyright Casassa</span>
+          <span class="copyright">@Copyright Casassa</span>
         </footer>
       </div>
     </div>
+    <script src="./javascripts/i18n.js"></script>
     <script src="../javascripts/navbar.js"></script>
   </body>
 </html>
