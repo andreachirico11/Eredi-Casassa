@@ -63,10 +63,17 @@
               <p id="lang-switcher"></p>
             </div>
           </div>
-          <span class="copyright">@Copyright Casassa</span>
+          <span class="copyright">
+            &copy;
+            <span id="copy-date"></span>
+            eredicasassa.com
+          </span>
         </footer>
       </div>
     </div>
+    <script>
+      document.getElementById('copy-date').textContent = new Date().getFullYear();
+    </script>
     <script src="./javascripts/i18n.js"></script>
     <script src="../javascripts/navbar.js"></script>
   </body>
