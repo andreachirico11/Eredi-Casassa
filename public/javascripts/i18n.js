@@ -1,12 +1,9 @@
 const switcher = document.getElementById('lang-switcher');
-const implementedLanguagesList = ['en', 'it'];
 const LOCAL_STORAGE_LABEL = 'LOCAL_STORAGE_LABEL';
+const defaultFallbackLanguage = 'en';
 let translator;
 
-let visualizationLanguage = checkLanguageExistence(
-  getFromLocalSt() || getBrowserLanguage(),
-  implementedLanguagesList
-);
+let visualizationLanguage = getFromLocalSt() || getBrowserLanguage();
 
 configureAndTranslate();
 adjustLanguageSwitcher(visualizationLanguage);
@@ -24,7 +21,7 @@ function configureAndTranslate() {
       const resources = buildResources(visualizationLanguage, lanObject);
       return i18next.init({
         lng: visualizationLanguage,
-        fallbackLng: 'en',
+        fallbackLng: defaultFallbackLanguage,
         debug: false,
         resources,
       });
@@ -63,18 +60,18 @@ function translateAll() {
   translateIfExists(getById('form-button'), translator('contacts.form-button'));
 }
 
-function getById(id) {
-  return document.getElementById('i18n-' + id);
-}
-
-function translateIfExists(element, translatedText) {
-  if (element) {
-    element.innerHTML = translatedText;
+function getBrowserLanguage() {
+  let browserLan = window.navigator.language;
+  if (browserLan) {
+    return extractLang(browserLan);
   }
+  return null;
 }
 
 function getLanguageFile(lang) {
-  return fetch(`../languages/${lang}.json`).then((r) => r.json());
+  return fetch(`../languages/${lang}.json`)
+    .then((r) => r.json())
+    .catch(() => loadDefaultLanguage());
 }
 
 function buildResources(languageName, langObject) {
@@ -85,12 +82,20 @@ function buildResources(languageName, langObject) {
   return output;
 }
 
-function getBrowserLanguage() {
-  let browserLan = window.navigator.language;
-  if (browserLan) {
-    return extractLang(browserLan);
+function getById(id) {
+  return document.getElementById('i18n-' + id);
+}
+
+function translateIfExists(element, translatedText) {
+  if (element) {
+    element.innerHTML = translatedText;
   }
-  return null;
+}
+
+function loadDefaultLanguage() {
+  visualizationLanguage = defaultFallbackLanguage;
+  adjustLanguageSwitcher(visualizationLanguage);
+  return getLanguageFile(defaultFallbackLanguage);
 }
 
 function extractLang(browserLan) {
@@ -124,10 +129,6 @@ function addToLocalSt(lang) {
   localStorage.setItem(LOCAL_STORAGE_LABEL, lang);
 }
 
-function getFromLocalSt(lang) {
+function getFromLocalSt() {
   return localStorage.getItem(LOCAL_STORAGE_LABEL) || null;
-}
-
-function checkLanguageExistence(lang, languages) {
-  return languages.find((l) => l === lang) ? lang : 'en';
 }
