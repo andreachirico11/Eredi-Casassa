@@ -145,7 +145,7 @@ label > input[type='checkbox']:checked + *::before {
 }
 
 textarea {
-  height: 4rem;
+  min-height: 4rem;
 }
 
 main {
@@ -733,7 +733,7 @@ footer {
 }
 
 .contacts-column-2 {
-  text-align: right;
+  text-align: center;
 }
 
 .form-last-row {
@@ -757,20 +757,13 @@ footer {
 }
 
 .gMap {
-  display: none;
   background-image: url('./assets/maps.png');
   background-position: center;
   background-size: cover;
-  width: 200px;
+  width: auto;
   height: 200px;
-  margin-left: auto;
+  margin-top: 3em;
   border-radius: 20px;
-}
-@media (min-width: 800px) {
-  .gMap {
-    width: 250px;
-    height: 250px;
-  }
 }
 
 .info {
@@ -780,6 +773,24 @@ footer {
 .info p {
   font-weight: bold;
   font-size: 0.8rem;
+}
+
+@media (max-width: 300px) {
+  .form-last-row {
+    flex-direction: column;
+  }
+
+  .form-last-row label {
+    margin-right: 0;
+    margin-bottom: 1em;
+    font-size: 0.8rem;
+
+  }
+
+  .form-last-row button {
+    width: 100%;
+  }
+
 }
 
 @media (min-width: 600px) {
@@ -794,10 +805,15 @@ footer {
 
   .contacts-column-2 {
     align-self: center;
+    text-align: right;
   }
 
   .gMap {
     display: block;
+    width: 200px;
+    margin: 0;
+    margin-left: auto;
+
   }
 
   .form h1 {
@@ -822,6 +838,13 @@ footer {
 
 .policy-container p {
   font-size: 1rem;
+}
+
+@media (min-width: 800px) {
+  .gMap {
+    width: 250px;
+    height: 250px;
+  }
 }
 
 /*Animations*/
