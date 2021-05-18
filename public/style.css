@@ -496,12 +496,22 @@ footer {
   font-size: 0.4em;
   text-align: center;
   padding-bottom: 3em;
-}
-
-@media (min-width: 700px) {
-  footer p {
-    font-size: 0.9rem;
+  padding-top: 2em;
   }
+
+  #lang-switcher {
+    cursor: pointer;
+  }
+
+  #lang-switcher img {
+    width: 16px;
+    margin-left: .5em;
+  }
+
+  @media (min-width: 700px) {
+    footer p {
+      font-size: 0.9rem;
+    }
 
   .footer-left {
     margin-bottom: 0;
@@ -529,6 +539,8 @@ footer {
   .footer-right {
     text-align: right;
   }
+
+
 }
 
 /* ---------> History */

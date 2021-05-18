@@ -1,46 +1,66 @@
-const language = 'en';
-let t;
+const switcher = document.getElementById('lang-switcher');
+const implementedLanguagesList = ['en', 'it'];
+const LOCAL_STORAGE_LABEL = 'LOCAL_STORAGE_LABEL';
+let translator;
 
-getLanguageFile(language)
-  .then((lanObject) => {
-    const resources = buildResources(language, lanObject);
-    return i18next.init({
-      lng: language,
-      debug: false,
-      resources,
+let visualizationLanguage = checkLanguageExistence(
+  getFromLocalSt() || getBrowserLanguage(),
+  implementedLanguagesList
+);
+
+configureAndTranslate();
+adjustLanguageSwitcher(visualizationLanguage);
+
+switcher.addEventListener('click', () => {
+  visualizationLanguage = switchLang(visualizationLanguage);
+  addToLocalSt(visualizationLanguage);
+  configureAndTranslate();
+  adjustLanguageSwitcher(visualizationLanguage);
+});
+
+function configureAndTranslate() {
+  getLanguageFile(visualizationLanguage)
+    .then((lanObject) => {
+      const resources = buildResources(visualizationLanguage, lanObject);
+      return i18next.init({
+        lng: visualizationLanguage,
+        fallbackLng: 'en',
+        debug: false,
+        resources,
+      });
+    })
+    .then(function (tr) {
+      translator = tr;
+      translateAll();
+    })
+    .catch((e) => {
+      return;
     });
-  })
-  .then(function (tr) {
-    t = tr;
-    translateAll();
-  })
-  .catch((e) => {
-    return;
-  });
+}
 
 function translateAll() {
-  translateIfExists(getById('history'), t('navbar.history'));
-  translateIfExists(getById('articles'), t('navbar.articles'));
-  translateIfExists(getById('contacts'), t('navbar.contacts'));
-  translateIfExists(getById('hour'), t('footer.hour'));
-  translateIfExists(getById('closureDay'), t('footer.closureDay'));
-  translateIfExists(getById('title'), t('history.title'));
-  translateIfExists(getById('paragraph'), t('history.paragraph'));
-  translateIfExists(getById('cat1'), t('products.cat1'));
-  translateIfExists(getById('cat2'), t('products.cat2'));
-  translateIfExists(getById('cat3'), t('products.cat3'));
-  translateIfExists(getById('cat4'), t('products.cat4'));
-  translateIfExists(getById('cat5'), t('products.cat5'));
-  translateIfExists(getById('cat6'), t('products.cat6'));
-  translateIfExists(getById('cat7'), t('products.cat7'));
-  translateIfExists(getById('cat8'), t('products.cat8'));
-  translateIfExists(getById('noProds'), t('products.noProds'));
-  translateIfExists(getById('form-title'), t('contacts.title'));
-  translateIfExists(getById('form1'), t('contacts.form1'));
-  translateIfExists(getById('form2'), t('contacts.form2'));
-  translateIfExists(getById('form3'), t('contacts.form3'));
-  translateIfExists(getById('accept'), t('contacts.accept'));
-  translateIfExists(getById('form-button'), t('contacts.form-button'));
+  translateIfExists(getById('history'), translator('navbar.history'));
+  translateIfExists(getById('articles'), translator('navbar.articles'));
+  translateIfExists(getById('contacts'), translator('navbar.contacts'));
+  translateIfExists(getById('hour'), translator('footer.hour'));
+  translateIfExists(getById('closureDay'), translator('footer.closureDay'));
+  translateIfExists(getById('title'), translator('history.title'));
+  translateIfExists(getById('paragraph'), translator('history.paragraph'));
+  translateIfExists(getById('cat1'), translator('products.cat1'));
+  translateIfExists(getById('cat2'), translator('products.cat2'));
+  translateIfExists(getById('cat3'), translator('products.cat3'));
+  translateIfExists(getById('cat4'), translator('products.cat4'));
+  translateIfExists(getById('cat5'), translator('products.cat5'));
+  translateIfExists(getById('cat6'), translator('products.cat6'));
+  translateIfExists(getById('cat7'), translator('products.cat7'));
+  translateIfExists(getById('cat8'), translator('products.cat8'));
+  translateIfExists(getById('noProds'), translator('products.noProds'));
+  translateIfExists(getById('form-title'), translator('contacts.form-title'));
+  translateIfExists(getById('form1'), translator('contacts.form1'));
+  translateIfExists(getById('form2'), translator('contacts.form2'));
+  translateIfExists(getById('form3'), translator('contacts.form3'));
+  translateIfExists(getById('accept'), translator('contacts.accept'));
+  translateIfExists(getById('form-button'), translator('contacts.form-button'));
 }
 
 function getById(id) {
@@ -63,4 +83,51 @@ function buildResources(languageName, langObject) {
     translation: langObject,
   };
   return output;
+}
+
+function getBrowserLanguage() {
+  let browserLan = window.navigator.language;
+  if (browserLan) {
+    return extractLang(browserLan);
+  }
+  return null;
+}
+
+function extractLang(browserLan) {
+  return browserLan.includes('-') && browserLan.length > 2 ? browserLan.split('-')[0] : browserLan;
+}
+
+function adjustLanguageSwitcher(lan) {
+  const chosenLang = switchLang(lan);
+  switcher.innerHTML = `
+  ${getLanguageName(
+    chosenLang
+  )}<img src="./assets/flags/${chosenLang}.png" alt="flag" class="flag" />
+  `;
+}
+
+function getLanguageName(lang) {
+  switch (lang) {
+    case 'it':
+      return 'Italiano';
+    case 'en':
+    default:
+      return 'English';
+  }
+}
+
+function switchLang(lan) {
+  return lan === 'en' ? 'it' : 'en';
+}
+
+function addToLocalSt(lang) {
+  localStorage.setItem(LOCAL_STORAGE_LABEL, lang);
+}
+
+function getFromLocalSt(lang) {
+  return localStorage.getItem(LOCAL_STORAGE_LABEL) || null;
+}
+
+function checkLanguageExistence(lang, languages) {
+  return languages.find((l) => l === lang) ? lang : 'en';
 }

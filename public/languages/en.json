@@ -24,7 +24,7 @@
         "noProds": "This Category is Empty"
     },
     "contacts": {
-        "title": "Contact us",
+        "form-title": "Contact us",
         "form1": "Name",
         "form2": "Email",
         "form3": "Message",
