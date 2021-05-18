@@ -635,7 +635,7 @@ footer {
   margin-right: var(--global-margin);
   display: flex;
   align-items: center;
-  margin-top: 5em;
+  margin-top: 3em;
 }
 
 .categories-header svg {

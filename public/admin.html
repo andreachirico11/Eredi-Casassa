@@ -38,6 +38,7 @@
       .admin-form {
         display: flex;
         flex-direction: column;
+        margin-top: 2em;
       }
       .admin-form input {
         margin: 0.5em 0;
@@ -48,7 +49,10 @@
     <div class="content">
       <div class="header">
         <div class="col">
-          <h1>Pagina Amministratore <button id="logout">Logout</button></h1>
+          <h1>
+            Pagina Amministratore
+            <button id="logout">Logout</button>
+          </h1>
           <h2>Seleziona la categoria</h2>
           <select>
             <option selected disabled>Seleziona</option>
@@ -56,6 +60,7 @@
           <h3 class="displayNone">Categoria vuota</h3>
         </div>
         <div class="col">
+          <a href="./">Vai alla Home</a>
           <div class="admin-form">
             <input type="text" placeholder="titolo" />
             <input type="file" />
