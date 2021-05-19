@@ -10,7 +10,9 @@ firebase.auth().onAuthStateChanged(
       const empty = document.getElementsByClassName('displayNone')[0];
       const progressBar = document.getElementById('uploadBar');
       const formButton = document.getElementById('admin-form-button');
-      let task, selectedCategory;
+      let task,
+        selectedCategory,
+        categoryLoadedData = [];
       /**
        *
        */
@@ -52,11 +54,9 @@ firebase.auth().onAuthStateChanged(
       }
 
       function loadCategoryToTable() {
-        db.ref(selectedCategory).on(
-          'value',
-          (category) => tableLoader(category.val()),
-          console.error
-        );
+        db.ref(selectedCategory)
+          .orderByChild('order')
+          .on('value', (category) => tableLoader(extractOrderedData(category)), console.error);
       }
 
       function onLoading(snapshot) {
@@ -90,6 +90,7 @@ firebase.auth().onAuthStateChanged(
           {
             imgUrl,
             title: getFileTitle(),
+            order: getLastOrder(),
           },
           function () {
             task = null;
@@ -119,10 +120,32 @@ firebase.auth().onAuthStateChanged(
         }
       }
 
+      function extractOrderedData(snapshot) {
+        const output = [];
+        snapshot.forEach((el) => {
+          const obj = {};
+          obj[el.key] = el.val();
+          categoryLoadedData.push(obj);
+          output.push(obj);
+        });
+        return output;
+      }
+
+      function getLastOrder() {
+        const lastObj = categoryLoadedData[categoryLoadedData.length - 1];
+        const key = getKeyFromFirebaseStyle(lastObj);
+        return lastObj[key].order;
+      }
+
       function addCategoryToTable(category) {
-        for (const key in category) {
-          table.appendChild(createRowWithCells(category[key], key));
-        }
+        category.forEach((element) => {
+          const key = getKeyFromFirebaseStyle(element);
+          table.appendChild(createRowWithCells(element[key], key));
+        });
+      }
+
+      function getKeyFromFirebaseStyle(obj) {
+        return Object.keys(obj)[0];
       }
 
       function createHtmlOption(value) {
@@ -134,26 +157,139 @@ firebase.auth().onAuthStateChanged(
 
       function createRowWithCells(obj, id) {
         const row = document.createElement('tr');
-        const cell1 = document.createElement('td');
-        cell1.innerText = obj.title;
-        row.appendChild(cell1);
-        const cell2 = document.createElement('td');
+        row.appendChild(createTitleCell(obj.title));
+        row.appendChild(createImgCell(obj.imgUrl));
+        row.appendChild(createActionCell(obj, id));
+        return row;
+      }
+
+      function createTitleCell(title) {
+        const titleCell = createCell();
+        titleCell.innerText = title;
+        return titleCell;
+      }
+
+      function createImgCell(url) {
+        const imgCell = document.createElement('td');
         const img = document.createElement('img');
         img.style.width = '50px';
         img.style.height = 'auto';
-        img.src = obj.imgUrl;
-        cell2.appendChild(img);
-        row.appendChild(cell2);
-        const cell3 = document.createElement('td');
+        img.src = url;
+        imgCell.appendChild(img);
+        return imgCell;
+      }
+
+      function createActionCell(obj, id) {
+        const actionCell = document.createElement('td');
+        actionCell.appendChild(createDeleteButton(id, obj.imgUrl));
+        actionCell.appendChild(createArrowButton(id, 'up'));
+        actionCell.appendChild(createArrowButton(id, 'down'));
+        return actionCell;
+      }
+
+      function createDeleteButton(id, imgUrl) {
         const button = document.createElement('button');
         button.textContent = 'Elimina';
         button.style.backgroundColor = 'red';
         button.onclick = function () {
-          deleteObject(id, obj.imgUrl);
+          deleteObject(id, imgUrl);
         };
-        cell3.appendChild(button);
-        row.appendChild(cell3);
-        return row;
+        return button;
+      }
+
+      function createArrowButton(id, type) {
+        const button = document.createElement('button');
+        if (type === 'up') {
+          button.innerHTML = '&#11165;';
+          button.onclick = function () {
+            moveElementUp(id);
+          };
+        } else {
+          button.innerHTML = '&#11167;';
+          button.onclick = function () {
+            moveElementDown(id);
+          };
+        }
+        return button;
+      }
+
+      function createCell() {
+        return document.createElement('td');
+      }
+
+      // function moveElementUp(id) {
+      //   const index = categoryLoadedData.findIndex(
+      //     (element) => getKeyFromFirebaseStyle(element) === id
+      //   );
+      //   const previous = categoryLoadedData[index - 1],
+      //     current = categoryLoadedData[index];
+      //   if (previous) {
+      //     exchangeElementOrdersAndSave(previous, current);
+      //   }
+      // }
+
+      // function moveElementDown(id) {
+      //   const index = categoryLoadedData.findIndex(
+      //     (element) => getKeyFromFirebaseStyle(element) === id
+      //   );
+      //   const next = categoryLoadedData[index + 1],
+      //     current = categoryLoadedData[index];
+      //   if (next) {
+      //     exchangeElementOrdersAndSave(next, current);
+      //   }
+      // }
+
+      function moveElementUp(id) {
+        const current = getCurrent(id);
+        let previous;
+        if (current) {
+          previous = getPreviousOrNext(current[getKeyFromFirebaseStyle(current)].order);
+        }
+        if (previous) {
+          exchangeElementOrdersAndSave(previous, current);
+        }
+      }
+
+      function moveElementDown(id) {
+        const current = getCurrent(id);
+        let next;
+        if (current) {
+          next = getPreviousOrNext(current[getKeyFromFirebaseStyle(current)].order, true);
+        }
+        if (next) {
+          exchangeElementOrdersAndSave(next, current);
+        }
+      }
+
+      function getCurrent(id) {
+        return categoryLoadedData.find((element) => getKeyFromFirebaseStyle(element) === id);
+      }
+
+      function getPreviousOrNext(order, next) {
+        const orderToFind = order + (next ? 1 : -1);
+        return categoryLoadedData.find(
+          (element) => element[getKeyFromFirebaseStyle(element)].order === orderToFind
+        );
+      }
+
+      function exchangeElementOrdersAndSave(el1, el2) {
+        const updates = {},
+          el1Key = getKeyFromFirebaseStyle(el1),
+          el2Key = getKeyFromFirebaseStyle(el2);
+        temp = el1[el1Key].order;
+        el1[el1Key].order = el2[el2Key].order;
+        el2[el2Key].order = temp;
+        updates[`/${selectedCategory}/${el1Key}`] = {
+          ...el1[el1Key],
+        };
+        updates[`/${selectedCategory}/${el2Key}`] = {
+          ...el2[el2Key],
+        };
+        updateDb(updates)
+          .then(() => {})
+          .catch((err) => {
+            alert('Errore update');
+          });
       }
 
       function deleteObject(objId, imgUrl) {
@@ -176,6 +312,10 @@ firebase.auth().onAuthStateChanged(
 
       function removeFromDb(uid) {
         return db.ref(selectedCategory + '/' + uid).remove();
+      }
+
+      function updateDb(updates) {
+        return db.ref().update(updates);
       }
 
       function removeAllRows() {

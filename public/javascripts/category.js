@@ -6,29 +6,41 @@ const container = document.getElementById('products-container');
 const url = '../products/products.json';
 const database = firebase.database();
 
-database.ref(categoryParam).on(
-  'value',
-  (fetchedProducts) => {
-    if (!fetchedProducts) {
-      return redirectToProducts();
+database
+  .ref(categoryParam)
+  .orderByChild('order')
+  .on(
+    'value',
+    (fetchedProducts) => {
+      if (!fetchedProducts) {
+        return redirectToProducts();
+      }
+      addCategoryProductsToView(extractOrderedData(fetchedProducts));
+      buildCategoryTitle();
+      checkForButtons(); // from scrollButton.js
+      translateAll(); // from i18n.js
+    },
+    (err) => {
+      redirectToProducts();
     }
-    addCategoryProductsToView(fetchedProducts.val());
-    buildCategoryTitle();
-    checkForButtons(); // from scrollButton.js
-    translateAll(); // from i18n.js
-  },
-  (err) => {
-    redirectToProducts();
-  }
-);
+  );
 
 function addCategoryProductsToView(products) {
   if (!products || products.length === 0) {
     return noProductFound();
   }
+  container.innerHTML = null;
   for (const key in products) {
     container.appendChild(generateProdHtml(products[key]));
   }
+}
+
+function extractOrderedData(snapshot) {
+  const output = [];
+  snapshot.forEach((el) => {
+    output.push(el.val());
+  });
+  return output;
 }
 
 function generateProdHtml(product) {
@@ -39,19 +51,19 @@ function generateProdHtml(product) {
   return prodTemplate;
 }
 
+function buildCategoryTitle() {
+  categoryTitle.innerHTML = `
+    <span id="i18n-cat${extractCategoryTitle()}"></span>
+
+  `;
+}
+
 function noProductFound() {
   container.appendChild(noProductFoundTemplate.content.cloneNode(true));
 }
 
 function redirectToProducts() {
   window.location.href = window.location.origin + '/products.html';
-}
-
-function buildCategoryTitle() {
-  categoryTitle.innerHTML = `
-    <span id="i18n-cat${extractCategoryTitle()}"></span>
-
-  `;
 }
 
 function extractCategoryTitle() {
