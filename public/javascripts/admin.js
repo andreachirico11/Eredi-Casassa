@@ -122,6 +122,7 @@ firebase.auth().onAuthStateChanged(
 
       function extractOrderedData(snapshot) {
         const output = [];
+        categoryLoadedData = [];
         snapshot.forEach((el) => {
           const obj = {};
           obj[el.key] = el.val();
@@ -217,59 +218,38 @@ firebase.auth().onAuthStateChanged(
         return document.createElement('td');
       }
 
-      // function moveElementUp(id) {
-      //   const index = categoryLoadedData.findIndex(
-      //     (element) => getKeyFromFirebaseStyle(element) === id
-      //   );
-      //   const previous = categoryLoadedData[index - 1],
-      //     current = categoryLoadedData[index];
-      //   if (previous) {
-      //     exchangeElementOrdersAndSave(previous, current);
-      //   }
-      // }
-
-      // function moveElementDown(id) {
-      //   const index = categoryLoadedData.findIndex(
-      //     (element) => getKeyFromFirebaseStyle(element) === id
-      //   );
-      //   const next = categoryLoadedData[index + 1],
-      //     current = categoryLoadedData[index];
-      //   if (next) {
-      //     exchangeElementOrdersAndSave(next, current);
-      //   }
-      // }
-
       function moveElementUp(id) {
-        const current = getCurrent(id);
-        let previous;
-        if (current) {
-          previous = getPreviousOrNext(current[getKeyFromFirebaseStyle(current)].order);
-        }
+        const index = categoryLoadedData.findIndex(
+          (element) => getKeyFromFirebaseStyle(element) === id
+        );
+        const previous = categoryLoadedData[index - 1],
+          current = categoryLoadedData[index];
         if (previous) {
-          exchangeElementOrdersAndSave(previous, current);
+          exchangeElementOrdersAndSave(previous, current)
+            .then(() => {
+              exchangePositionsInLocalDb(index, index - 1);
+            })
+            .catch((err) => {
+              alert('Errore update');
+            });
         }
       }
 
       function moveElementDown(id) {
-        const current = getCurrent(id);
-        let next;
-        if (current) {
-          next = getPreviousOrNext(current[getKeyFromFirebaseStyle(current)].order, true);
-        }
-        if (next) {
-          exchangeElementOrdersAndSave(next, current);
-        }
-      }
-
-      function getCurrent(id) {
-        return categoryLoadedData.find((element) => getKeyFromFirebaseStyle(element) === id);
-      }
-
-      function getPreviousOrNext(order, next) {
-        const orderToFind = order + (next ? 1 : -1);
-        return categoryLoadedData.find(
-          (element) => element[getKeyFromFirebaseStyle(element)].order === orderToFind
+        const index = categoryLoadedData.findIndex(
+          (element) => getKeyFromFirebaseStyle(element) === id
         );
+        const next = categoryLoadedData[index + 1],
+          current = categoryLoadedData[index];
+        if (next) {
+          exchangeElementOrdersAndSave(next, current)
+            .then(() => {
+              exchangePositionsInLocalDb(index, index + 1);
+            })
+            .catch((err) => {
+              alert('Errore update');
+            });
+        }
       }
 
       function exchangeElementOrdersAndSave(el1, el2) {
@@ -277,6 +257,7 @@ firebase.auth().onAuthStateChanged(
           el1Key = getKeyFromFirebaseStyle(el1),
           el2Key = getKeyFromFirebaseStyle(el2);
         temp = el1[el1Key].order;
+        // act on external state
         el1[el1Key].order = el2[el2Key].order;
         el2[el2Key].order = temp;
         updates[`/${selectedCategory}/${el1Key}`] = {
@@ -285,11 +266,14 @@ firebase.auth().onAuthStateChanged(
         updates[`/${selectedCategory}/${el2Key}`] = {
           ...el2[el2Key],
         };
-        updateDb(updates)
-          .then(() => {})
-          .catch((err) => {
-            alert('Errore update');
-          });
+        return updateDb(updates);
+      }
+
+      function exchangePositionsInLocalDb(index1, index2) {
+        const temp = categoryLoadedData[index1];
+        categoryLoadedData[index1] = { ...categoryLoadedData[index2] };
+        categoryLoadedData[index2] = { ...temp };
+        console.log(categoryLoadedData);
       }
 
       function deleteObject(objId, imgUrl) {
