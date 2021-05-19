@@ -70,17 +70,17 @@ function extractCategoryTitle() {
   switch (categoryParam) {
     case 'marina':
       return 1;
-    case 'arredamento':
-      return 2;
-    case 'elettrodomestici':
-      return 3;
-    case 'elettricità':
-      return 4;
     case 'lampadari':
-      return 5;
+      return 2;
+    case 'arredamento':
+      return 3;
     case 'paralumi':
-      return 6;
+      return 4;
+    case 'elettrodomestici':
+      return 5;
     case 'ottone':
+      return 6;
+    case 'elettricità':
       return 7;
     case 'riparazioni':
     default:

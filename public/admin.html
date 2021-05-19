@@ -35,6 +35,10 @@
       .admin .header {
         display: flex;
         justify-content: space-between;
+        flex-direction: column;
+      }
+      .admin .col {
+        margin: 1em 0;
       }
       .admin-form {
         display: flex;
@@ -43,12 +47,18 @@
       }
       .admin-form input {
         margin: 0.5em 0;
+        max-width: 300px;
       }
       .admin td button {
         margin: 0 0.5em;
       }
       .admin .update-present {
         border: 3px solid green;
+      }
+      @media screen and (min-width: 768px) {
+        .admin .header {
+          flex-direction: row;
+        }
       }
     </style>
   </head>
@@ -77,6 +87,7 @@
           </div>
         </div>
       </div>
+      <p class="displayNone" id="empty">La Categoria è vuota</p>
       <table class="admin-table">
         <tr class="admin-table-header">
           <th>Titolo</th>

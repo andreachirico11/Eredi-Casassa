@@ -7,7 +7,7 @@ firebase.auth().onAuthStateChanged(
       const storage = firebase.storage();
       const select = document.getElementsByTagName('select')[0];
       const table = document.getElementsByTagName('table')[0];
-      const empty = document.getElementsByClassName('displayNone')[0];
+      const empty = document.getElementById('empty');
       const progressBar = document.getElementById('uploadBar');
       const formButton = document.getElementById('admin-form-button');
       const updateOrderButton = document.getElementById('update-order');
@@ -63,7 +63,7 @@ firebase.auth().onAuthStateChanged(
 
       function tableLoader(category) {
         removeAllRows();
-        if (category) {
+        if (Object.keys(category).length > 0) {
           empty.classList.add('displayNone');
           addCategoryToTable(extractOrderedData(category));
         } else {
@@ -251,7 +251,7 @@ firebase.auth().onAuthStateChanged(
 
       formButton.addEventListener('click', () => {
         if (loadFormValidation()) {
-          const storageRef = storage.ref(createFileUrl(getFileTitle(), getFile().name));
+          const storageRef = storage.ref(createFileUrl(getFileTitleWithNoSpaces(), getFile().name));
           task = storageRef.put(getFile());
           task.on('state_changed', onLoading, onLoadingError, onLoadingComplete);
         }
@@ -274,6 +274,7 @@ firebase.auth().onAuthStateChanged(
           .getDownloadURL()
           .then(saveReferenceOnDb)
           .then(() => {
+            resetForm();
             confirm('Salvato');
           })
           .catch((err) => {
@@ -320,16 +321,34 @@ firebase.auth().onAuthStateChanged(
         return selectedCategory + '/' + title + /\.(.+)/.exec(fileName)[0];
       }
 
+      function getFileTitleWithNoSpaces() {
+        return getFileTitle().split(' ').join('_');
+      }
+
       function getFileTitle() {
-        return document.getElementsByTagName('input')[0].value;
+        return document
+          .getElementsByTagName('input')[0]
+          .value.split(' ')
+          .map((word) => titleCaseWord(word))
+          .join(' ');
       }
 
       function getFile() {
         return document.getElementsByTagName('input')[1].files[0];
       }
 
+      function resetForm() {
+        document.getElementsByTagName('input')[0].value = null;
+        document.getElementsByTagName('input')[1].value = null;
+      }
+
       function getFileNameFromUrl(url) {
         return /.*%2F(.*?)\?alt/.exec(url)[1];
+      }
+
+      function titleCaseWord(word) {
+        const splitted = word.split('');
+        return splitted[0].toUpperCase() + splitted.slice(1).join('');
       }
     }
   },
