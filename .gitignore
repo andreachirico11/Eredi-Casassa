@@ -67,3 +67,5 @@ node_modules/
 
 
 .vscode/
+
+public/javascripts/api-keys.js

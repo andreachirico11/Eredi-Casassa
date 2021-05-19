@@ -22,7 +22,7 @@ form.onsubmit = (e) => {
     return access(name.value, email.value);
   }
   if (validateForm()) {
-    form.setAttribute('action', 'https://formspree.io/f/mbjppzqd');
+    form.setAttribute('action', `https://formspree.io/f/${formSpreeFormId}`);
     return true;
   }
   form.classList.add('invalid-sub');
@@ -30,7 +30,12 @@ form.onsubmit = (e) => {
 };
 
 function validateForm() {
-  if (name.validity.valid && email.validity.valid && message.validity.valid && checkbox.validity.valid) {
+  if (
+    name.validity.valid &&
+    email.validity.valid &&
+    message.validity.valid &&
+    checkbox.validity.valid
+  ) {
     btn.disabled = false;
     return true;
   } else {

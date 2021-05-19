@@ -1,9 +1,8 @@
 // Your web app's Firebase configuration
 var firebaseConfig = {
-  apiKey: 'AIzaSyB_FWDsMuqiD-vQIJBWoxl7-MTbXWnnerA',
+  apiKey: googleApiKey,
   authDomain: 'eredicasassa.firebaseapp.com',
-  databaseURL:
-    'https://eredicasassa-default-rtdb.europe-west1.firebasedatabase.app',
+  databaseURL: 'https://eredicasassa-default-rtdb.europe-west1.firebasedatabase.app',
   projectId: 'eredicasassa',
   storageBucket: 'eredicasassa.appspot.com',
   messagingSenderId: '180018356989',
