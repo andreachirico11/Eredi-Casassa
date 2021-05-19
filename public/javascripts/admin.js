@@ -12,33 +12,13 @@ firebase.auth().onAuthStateChanged(
       const formButton = document.getElementById('admin-form-button');
       let task,
         selectedCategory,
-        categoryLoadedData = [];
-      /**
-       *
-       */
+        categoryLoadedData = {};
+
       db.ref('categories').on(
         'value',
         (categoriesSnapshot) => onFetchCategories(categoriesSnapshot.val()),
         console.error
       );
-
-      document.getElementById('logout').addEventListener('click', () => {
-        firebase
-          .auth()
-          .signOut()
-          .then(() => {
-            redirectToHome();
-          })
-          .catch(console.error);
-      });
-
-      formButton.addEventListener('click', () => {
-        if (loadFormValidation()) {
-          const storageRef = storage.ref(createFileUrl(getFileTitle(), getFile().name));
-          task = storageRef.put(getFile());
-          task.on('state_changed', onLoading, onLoadingError, onLoadingComplete);
-        }
-      });
 
       function onFetchCategories(categoriesSnapshot) {
         categoriesSnapshot.forEach((category) => {
@@ -46,6 +26,13 @@ firebase.auth().onAuthStateChanged(
           select.appendChild(option);
         });
         select.addEventListener('change', onSelectChange);
+      }
+
+      function createHtmlOption(value) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.innerText = value;
+        return option;
       }
 
       function onSelectChange() {
@@ -56,58 +43,21 @@ firebase.auth().onAuthStateChanged(
       function loadCategoryToTable() {
         db.ref(selectedCategory)
           .orderByChild('order')
-          .on('value', (category) => tableLoader(extractOrderedData(category)), console.error);
+          .on(
+            'value',
+            (category) => {
+              saveCategoryLocally(category);
+              tableLoader(categoryLoadedData);
+            },
+            console.error
+          );
       }
 
-      function onLoading(snapshot) {
-        progressBar.classList.remove('displayNone');
-        const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        progressBar.value = percentage;
-      }
-
-      function onLoadingError(err) {
-        alert('Immagine non salvata');
-      }
-
-      function onLoadingComplete() {
-        progressBar.classList.add('displayNone');
-        progressBar.value = 0;
-        task.snapshot.ref
-          .getDownloadURL()
-          .then(saveReferenceOnDb)
-          .then((saved) => {
-            confirm('Salvato');
-            console.log(saved);
-          })
-          .catch((err) => {
-            alert('Non salvato su Db');
-            console.error(err);
-          });
-      }
-
-      function saveReferenceOnDb(imgUrl) {
-        return db.ref(selectedCategory + '/').push(
-          {
-            imgUrl,
-            title: getFileTitle(),
-            order: getLastOrder(),
-          },
-          function () {
-            task = null;
-          }
-        );
-      }
-
-      function loadFormValidation() {
-        if (!selectedCategory) {
-          alert('manca la categoria');
-          return false;
-        }
-        if (getFile() && getFileTitle()) {
-          return true;
-        }
-        alert('e compilali sti campi');
-        return false;
+      function saveCategoryLocally(dbCategory) {
+        categoryLoadedData = {};
+        dbCategory.forEach((el) => {
+          categoryLoadedData[el.key] = el.val();
+        });
       }
 
       function tableLoader(category) {
@@ -120,40 +70,18 @@ firebase.auth().onAuthStateChanged(
         }
       }
 
-      function extractOrderedData(snapshot) {
-        const output = [];
-        categoryLoadedData = [];
-        snapshot.forEach((el) => {
-          const obj = {};
-          obj[el.key] = el.val();
-          categoryLoadedData.push(obj);
-          output.push(obj);
-        });
-        return output;
-      }
-
-      function getLastOrder() {
-        const lastObj = categoryLoadedData[categoryLoadedData.length - 1];
-        const key = getKeyFromFirebaseStyle(lastObj);
-        return lastObj[key].order;
+      function removeAllRows() {
+        Array.from(table.getElementsByTagName('tr'))
+          .filter((tr) => !tr.classList.contains('admin-table-header'))
+          .forEach((tr) => {
+            tr.remove();
+          });
       }
 
       function addCategoryToTable(category) {
-        category.forEach((element) => {
-          const key = getKeyFromFirebaseStyle(element);
-          table.appendChild(createRowWithCells(element[key], key));
+        Object.keys(category).forEach((key) => {
+          table.appendChild(createRowWithCells(category[key], key));
         });
-      }
-
-      function getKeyFromFirebaseStyle(obj) {
-        return Object.keys(obj)[0];
-      }
-
-      function createHtmlOption(value) {
-        const option = document.createElement('option');
-        option.value = value;
-        option.innerText = value;
-        return option;
       }
 
       function createRowWithCells(obj, id) {
@@ -198,84 +126,6 @@ firebase.auth().onAuthStateChanged(
         return button;
       }
 
-      function createArrowButton(id, type) {
-        const button = document.createElement('button');
-        if (type === 'up') {
-          button.innerHTML = '&#11165;';
-          button.onclick = function () {
-            moveElementUp(id);
-          };
-        } else {
-          button.innerHTML = '&#11167;';
-          button.onclick = function () {
-            moveElementDown(id);
-          };
-        }
-        return button;
-      }
-
-      function createCell() {
-        return document.createElement('td');
-      }
-
-      function moveElementUp(id) {
-        const index = categoryLoadedData.findIndex(
-          (element) => getKeyFromFirebaseStyle(element) === id
-        );
-        const previous = categoryLoadedData[index - 1],
-          current = categoryLoadedData[index];
-        if (previous) {
-          exchangeElementOrdersAndSave(previous, current)
-            .then(() => {
-              exchangePositionsInLocalDb(index, index - 1);
-            })
-            .catch((err) => {
-              alert('Errore update');
-            });
-        }
-      }
-
-      function moveElementDown(id) {
-        const index = categoryLoadedData.findIndex(
-          (element) => getKeyFromFirebaseStyle(element) === id
-        );
-        const next = categoryLoadedData[index + 1],
-          current = categoryLoadedData[index];
-        if (next) {
-          exchangeElementOrdersAndSave(next, current)
-            .then(() => {
-              exchangePositionsInLocalDb(index, index + 1);
-            })
-            .catch((err) => {
-              alert('Errore update');
-            });
-        }
-      }
-
-      function exchangeElementOrdersAndSave(el1, el2) {
-        const updates = {},
-          el1Key = getKeyFromFirebaseStyle(el1),
-          el2Key = getKeyFromFirebaseStyle(el2);
-        temp = el1[el1Key].order;
-        // act on external state
-        el1[el1Key].order = el2[el2Key].order;
-        el2[el2Key].order = temp;
-        updates[`/${selectedCategory}/${el1Key}`] = {
-          ...el1[el1Key],
-        };
-        updates[`/${selectedCategory}/${el2Key}`] = {
-          ...el2[el2Key],
-        };
-        return updateDb(updates);
-      }
-
-      function exchangePositionsInLocalDb(index1, index2) {
-        const temp = categoryLoadedData[index1];
-        categoryLoadedData[index1] = { ...categoryLoadedData[index2] };
-        categoryLoadedData[index2] = { ...temp };
-        console.log(categoryLoadedData);
-      }
-
       function deleteObject(objId, imgUrl) {
         removeFromDb(objId)
           .then(() => {
@@ -289,25 +139,140 @@ firebase.auth().onAuthStateChanged(
           });
       }
 
+      function removeFromDb(uid) {
+        return db.ref(selectedCategory + '/' + uid).remove();
+      }
+
       function removeFromStorage(imgUrl) {
         const ref = storage.ref().child(selectedCategory).child(getFileNameFromUrl(imgUrl));
         return ref.delete();
       }
 
-      function removeFromDb(uid) {
-        return db.ref(selectedCategory + '/' + uid).remove();
+      function createArrowButton(id, type) {
+        const button = document.createElement('button');
+        let innerHTML, increment;
+        if (type === 'up') {
+          innerHTML = '&#11165;';
+          increment = -1;
+        } else {
+          innerHTML = '&#11167;';
+          increment = 1;
+        }
+        button.innerHTML = innerHTML;
+        button.onclick = function () {
+          exchangeOrder(id, increment);
+        };
+        return button;
+      }
+
+      function exchangeOrder(id, increment) {
+        const allKeys = Object.keys(categoryLoadedData),
+          currentKeyIndex = allKeys.findIndex((key) => key === id),
+          current = { ...categoryLoadedData[allKeys[currentKeyIndex]] },
+          preOrNextKeyIndex = currentKeyIndex + increment,
+          prevOrNext = { ...categoryLoadedData[allKeys[preOrNextKeyIndex]] };
+        if (Object.keys(prevOrNext).length > 0) {
+          const updates = {};
+          updates[`/${selectedCategory}/${allKeys[currentKeyIndex]}`] = {
+            ...current,
+            order: prevOrNext.order,
+          };
+          updates[`/${selectedCategory}/${allKeys[preOrNextKeyIndex]}`] = {
+            ...prevOrNext,
+            order: current.order,
+          };
+          updateDb(updates);
+        }
       }
 
       function updateDb(updates) {
-        return db.ref().update(updates);
+        db.ref()
+          .update(updates)
+          .then((r) => {
+            console.log(r);
+          })
+          .catch(() => alert('Errore update'));
       }
 
-      function removeAllRows() {
-        Array.from(table.getElementsByTagName('tr'))
-          .filter((tr) => !tr.classList.contains('admin-table-header'))
-          .forEach((tr) => {
-            tr.remove();
+      function createCell() {
+        return document.createElement('td');
+      }
+
+      document.getElementById('logout').addEventListener('click', () => {
+        firebase
+          .auth()
+          .signOut()
+          .then(() => {
+            redirectToHome();
+          })
+          .catch(console.error);
+      });
+
+      formButton.addEventListener('click', () => {
+        if (loadFormValidation()) {
+          const storageRef = storage.ref(createFileUrl(getFileTitle(), getFile().name));
+          task = storageRef.put(getFile());
+          task.on('state_changed', onLoading, onLoadingError, onLoadingComplete);
+        }
+      });
+
+      function onLoading(snapshot) {
+        progressBar.classList.remove('displayNone');
+        const percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        progressBar.value = percentage;
+      }
+
+      function onLoadingError(err) {
+        alert('Immagine non salvata');
+      }
+
+      function onLoadingComplete() {
+        progressBar.classList.add('displayNone');
+        progressBar.value = 0;
+        task.snapshot.ref
+          .getDownloadURL()
+          .then(saveReferenceOnDb)
+          .then(() => {
+            confirm('Salvato');
+          })
+          .catch((err) => {
+            alert('Non salvato su Db');
+            console.error(err);
           });
+      }
+
+      function saveReferenceOnDb(imgUrl) {
+        return db.ref(selectedCategory + '/').push(
+          {
+            imgUrl,
+            title: getFileTitle(),
+            order: getLastOrderAugmented(),
+          },
+          function () {
+            task = null;
+          }
+        );
+      }
+
+      function loadFormValidation() {
+        if (!selectedCategory) {
+          alert('manca la categoria');
+          return false;
+        }
+        if (getFile() && getFileTitle()) {
+          return true;
+        }
+        alert('e compilali sti campi');
+        return false;
+      }
+
+      function getLastOrderAugmented() {
+        const keys = Object.keys(categoryLoadedData);
+        if (keys.length === 0) {
+          return 1;
+        }
+        const lastObj = categoryLoadedData[keys[keys.length - 1]];
+        return lastObj.order + 1;
       }
 
       function createFileUrl(title, fileName) {
