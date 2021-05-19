@@ -10,9 +10,12 @@ firebase.auth().onAuthStateChanged(
       const empty = document.getElementsByClassName('displayNone')[0];
       const progressBar = document.getElementById('uploadBar');
       const formButton = document.getElementById('admin-form-button');
+      const updateOrderButton = document.getElementById('update-order');
       let task,
         selectedCategory,
-        categoryLoadedData = {};
+        categoryLoadedData = {},
+        updates = {};
+      categoryVisualizationOrder = [];
 
       db.ref('categories').on(
         'value',
@@ -41,16 +44,14 @@ firebase.auth().onAuthStateChanged(
       }
 
       function loadCategoryToTable() {
-        db.ref(selectedCategory)
-          .orderByChild('order')
-          .on(
-            'value',
-            (category) => {
-              saveCategoryLocally(category);
-              tableLoader(categoryLoadedData);
-            },
-            console.error
-          );
+        db.ref(selectedCategory).on(
+          'value',
+          (category) => {
+            saveCategoryLocally(category);
+            tableLoader(categoryLoadedData);
+          },
+          console.error
+        );
       }
 
       function saveCategoryLocally(dbCategory) {
@@ -64,7 +65,7 @@ firebase.auth().onAuthStateChanged(
         removeAllRows();
         if (category) {
           empty.classList.add('displayNone');
-          addCategoryToTable(category);
+          addCategoryToTable(extractOrderedData(category));
         } else {
           empty.classList.remove('displayNone');
         }
@@ -78,10 +79,31 @@ firebase.auth().onAuthStateChanged(
           });
       }
 
-      function addCategoryToTable(category) {
-        Object.keys(category).forEach((key) => {
-          table.appendChild(createRowWithCells(category[key], key));
+      function addCategoryToTable(orderedData) {
+        orderedData.forEach((data) => table.appendChild(createRowWithCells(data, data.key)));
+      }
+
+      function extractOrderedData(category) {
+        let output = [],
+          keys = Object.keys(category);
+        keys.forEach((key, i) => {
+          if (i !== 0 && category[key].order < output[i - 1].order) {
+            const firstBiggeElIndex = output.findIndex((el) => el.order > category[key].order);
+            output = [
+              ...output.slice(0, firstBiggeElIndex),
+              { key, ...category[key] },
+              ...output.slice(firstBiggeElIndex),
+            ];
+          } else {
+            output.push({ key, ...category[key] });
+          }
         });
+        getVisualizatiOrder(output);
+        return output;
+      }
+
+      function getVisualizatiOrder(orderedObjects) {
+        categoryVisualizationOrder = orderedObjects.map((obj) => obj.key);
       }
 
       function createRowWithCells(obj, id) {
@@ -110,8 +132,8 @@ firebase.auth().onAuthStateChanged(
 
       function createActionCell(obj, id) {
         const actionCell = document.createElement('td');
-        actionCell.appendChild(createDeleteButton(id, obj.imgUrl));
         actionCell.appendChild(createArrowButton(id, 'up'));
+        actionCell.appendChild(createDeleteButton(id, obj.imgUrl));
         actionCell.appendChild(createArrowButton(id, 'down'));
         return actionCell;
       }
@@ -134,7 +156,7 @@ firebase.auth().onAuthStateChanged(
           .then(() => {
             confirm('Cancellato');
           })
-          .catch((err) => {
+          .catch(() => {
             alert('Errore eliminazione immagine');
           });
       }
@@ -160,42 +182,61 @@ firebase.auth().onAuthStateChanged(
         }
         button.innerHTML = innerHTML;
         button.onclick = function () {
-          exchangeOrder(id, increment);
+          exchangeOrderLocally(id, increment);
         };
         return button;
       }
 
-      function exchangeOrder(id, increment) {
-        const allKeys = Object.keys(categoryLoadedData),
-          currentKeyIndex = allKeys.findIndex((key) => key === id),
-          current = { ...categoryLoadedData[allKeys[currentKeyIndex]] },
+      function exchangeOrderLocally(id, increment) {
+        const currentKeyIndex = categoryVisualizationOrder.findIndex((key) => key === id),
+          current = { ...categoryLoadedData[categoryVisualizationOrder[currentKeyIndex]] },
           preOrNextKeyIndex = currentKeyIndex + increment,
-          prevOrNext = { ...categoryLoadedData[allKeys[preOrNextKeyIndex]] };
+          prevOrNext = { ...categoryLoadedData[categoryVisualizationOrder[preOrNextKeyIndex]] };
         if (Object.keys(prevOrNext).length > 0) {
-          const updates = {};
-          updates[`/${selectedCategory}/${allKeys[currentKeyIndex]}`] = {
+          categoryLoadedData[categoryVisualizationOrder[currentKeyIndex]] = {
             ...current,
             order: prevOrNext.order,
           };
-          updates[`/${selectedCategory}/${allKeys[preOrNextKeyIndex]}`] = {
+          categoryLoadedData[categoryVisualizationOrder[preOrNextKeyIndex]] = {
             ...prevOrNext,
             order: current.order,
           };
-          updateDb(updates);
+          updates[`/${selectedCategory}/${categoryVisualizationOrder[currentKeyIndex]}`] = {
+            ...current,
+            order: prevOrNext.order,
+          };
+          updates[`/${selectedCategory}/${categoryVisualizationOrder[preOrNextKeyIndex]}`] = {
+            ...prevOrNext,
+            order: current.order,
+          };
+          highlightUpdateBtn();
+          tableLoader(categoryLoadedData);
         }
       }
 
-      function updateDb(updates) {
-        db.ref()
-          .update(updates)
-          .then((r) => {
-            console.log(r);
-          })
-          .catch(() => alert('Errore update'));
-      }
+      updateOrderButton.addEventListener('click', () => {
+        if (Object.keys(updates).length > 0) {
+          db.ref()
+            .update(updates)
+            .then(() => {
+              updates = {};
+              confirm('Ordine Aggiornato');
+              removeHighlightUpdateBtn();
+            })
+            .catch(() => alert('Errore update'));
+        }
+      });
 
       function createCell() {
         return document.createElement('td');
+      }
+
+      function highlightUpdateBtn() {
+        updateOrderButton.classList.add('update-present');
+      }
+
+      function removeHighlightUpdateBtn() {
+        updateOrderButton.classList.remove('update-present');
       }
 
       document.getElementById('logout').addEventListener('click', () => {

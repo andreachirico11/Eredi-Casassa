@@ -43,6 +43,12 @@
       .admin-form input {
         margin: 0.5em 0;
       }
+      .admin td button {
+        margin: 0 0.5em;
+      }
+      .admin .update-present {
+        border: 3px solid green;
+      }
     </style>
   </head>
   <body class="admin">
@@ -57,13 +63,14 @@
           <select>
             <option selected disabled>Seleziona</option>
           </select>
+          <button id="update-order">Aggiorna Ordine</button>
           <h3 class="displayNone">Categoria vuota</h3>
         </div>
         <div class="col">
           <a href="./">Vai alla Home</a>
           <div class="admin-form">
             <input type="text" placeholder="titolo" />
-            <input type="file" />
+            <input type="file" placeholder="Scegli File" />
             <button id="admin-form-button">Carica</button>
             <progress value="0" max="100" id="uploadBar" class="displayNone"></progress>
           </div>
