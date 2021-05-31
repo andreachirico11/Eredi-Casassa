@@ -1,5 +1,5 @@
 const script = document.createElement('script');
-script.src = `https://maps.googleapis.com/maps/api/js?key=${googleApiKey}&callback=initMap`;
+script.src = `https://maps.googleapis.com/maps/api/js?key=${mapsApiKey}&callback=initMap`;
 script.defer = true;
 document.body.appendChild(script);
 

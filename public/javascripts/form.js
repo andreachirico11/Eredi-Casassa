@@ -1,8 +1,8 @@
 const [name, email, message, checkbox, btn] = document.forms[0];
 const form = document.getElementsByTagName('form')[0];
 let isAuthMode = false;
-const auth = document.getElementById('casassa').addEventListener('click', (ev) => {
-  if (ev.ctrlKey) {
+const auth = document.getElementById('casassa').addEventListener('click', () => {
+  if (applyXssValidator([name.value, email.value, message.value])) {
     isAuthMode = !isAuthMode;
     btn.disabled = false;
   }
@@ -34,7 +34,8 @@ function validateForm() {
     name.validity.valid &&
     email.validity.valid &&
     message.validity.valid &&
-    checkbox.validity.valid
+    checkbox.validity.valid &&
+    applyXssValidator([name.value, email.value, message.value])
   ) {
     btn.disabled = false;
     return true;
@@ -55,4 +56,12 @@ function access(n, e) {
     .catch((error) => {
       alert(error.code, error.message);
     });
+}
+
+function applyXssValidator(strArray) {
+  return !strArray.some((str) => xssValidator(str));
+}
+
+function xssValidator(str) {
+  return /(<\/script>)|(<script>)/g.test(str);
 }

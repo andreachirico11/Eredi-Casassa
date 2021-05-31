@@ -1,3 +1,8 @@
+if (!sessionStorage.getItem('isAuthenticated')) {
+  window.stop();
+  redirectHome();
+}
+
 firebase.auth().onAuthStateChanged(
   function (user) {
     if (!user) {
@@ -174,10 +179,10 @@ firebase.auth().onAuthStateChanged(
         const button = document.createElement('button');
         let innerHTML, increment;
         if (type === 'up') {
-          innerHTML = '&#11165;';
+          innerHTML = 'Su';
           increment = -1;
         } else {
-          innerHTML = '&#11167;';
+          innerHTML = 'Giù';
           increment = 1;
         }
         button.innerHTML = innerHTML;
