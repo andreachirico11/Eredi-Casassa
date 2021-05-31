@@ -509,11 +509,29 @@ footer {
 
   #lang-switcher {
     cursor: pointer;
+  font-family: 'Life Savers', cursive;
+
+  }
+  
+  #flag {
+    width: 9px;
+    margin-left: .5em;
+    height: 9px;
+    border-radius: 100%;
+
   }
 
-  #lang-switcher img {
-    width: 16px;
-    margin-left: .5em;
+  #lang-switcher {
+    color: var(--text);
+    background: none;
+    border: none;
+  }
+
+  #lang-switcher option{
+    background-color: var(--main-bg);
+    border: none;
+    outline: none;
+    
   }
 
   @media (min-width: 700px) {
