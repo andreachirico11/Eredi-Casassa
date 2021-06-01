@@ -1,0 +1,34 @@
+{
+    "navbar": {
+        "history": "Histoire",
+        "articles": "Articles",
+        "contacts": "Contact"
+    },
+    "footer": {
+        "hour": "Horaire",
+        "closureDay": "Fermé le Dimanche"
+    },
+    "history": {
+        "title": "En Caruggio depuis",
+        "paragraph": "Eredi Casassa est une des plus anciennes boutiques de Chiavari et maintient encore le simple et typique ameublement des origines. Nous sommes spécialisés dans la vente et l’installation de matériel éléctrique, articles d’éclairage, petits appareils ménagers, pièces de réchange pour le bricolage. Nous avons  ajouté une touche de nouveauté avec un grand choix d’accessoires  et objets cadeaux marins: maquettes de bateaux et phares,instruments de navigation, lampes et décorations en style mer. Nous continuons l’activité d’électricien à  domicile et nous faisons des travaux de réparation, transformation et production artisanale de lampes et lustres."
+    },
+    "products": {
+        "cat1": "Objets cadeaux",
+        "cat2": "Accessoires nautiques",
+        "cat3": "Ameublement",
+        "cat4": "Eclairage",
+        "cat5": "Matériel électrique",
+        "cat6": "Pièces réchange",
+        "cat7": "Appareils ménagers",
+        "cat8": "Réparations",
+        "noProds": "Il n'y a pas d'article dans cette catégorie"
+    },
+    "contacts": {
+        "form-title": "Contactez-nous",
+        "form1": "Prénom",
+        "form2": "Email",
+        "form3": "Message",
+        "accept": "Consensus",
+        "form-button": "Envoyer"
+    }
+}

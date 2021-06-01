@@ -1,24 +1,28 @@
-// const switcher = document.getElementById('lang-switcher');
-const languageSelect = document.getElementById('lang-switcher');
+// MODIFY FOR NEW LANGUAGES
+const languages = ['it', 'en', 'fr'];
+function getLanguageName(lang) {
+  switch (lang) {
+    case 'it':
+      return 'Italiano';
+    case 'fr':
+      return 'Français';
+    case 'en':
+    default:
+      return 'English';
+  }
+}
+//////////////////////////
 
+const languageSelect = document.getElementById('lang-switcher');
 const LOCAL_STORAGE_LABEL = 'LOCAL_STORAGE_LABEL';
 const defaultFallbackLanguage = 'en';
 let translator;
-const languages = ['it', 'en'];
 
 let visualizationLanguage = getFromLocalSt() || getBrowserLanguage();
 
 createSelect(languages, languageSelect, visualizationLanguage);
 configureAndTranslate();
 adjustFlag(visualizationLanguage);
-// adjustLanguageSwitcher(visualizationLanguage);
-
-// switcher.addEventListener('click', () => {
-//   visualizationLanguage = switchLang(visualizationLanguage);
-//   addToLocalSt(visualizationLanguage);
-//   configureAndTranslate();
-//   adjustLanguageSwitcher(visualizationLanguage);
-// });
 
 languageSelect.addEventListener('change', onSelectChange);
 
@@ -26,10 +30,6 @@ function createSelect(languages, select, actuallySelected) {
   languages.forEach((lan) => {
     const opt = document.createElement('option');
     opt.value = lan;
-    // opt.innerHTML = `<img src="./assets/flags/${lan}.png" alt="${lan} flag" class="flag"/> ${getLanguageName(
-    //   lan
-    // )}`;
-    // opt.style.backgroundImage = `background-image:url(./assets/flags/${lan}.png)`;
     opt.innerHTML = getLanguageName(lan);
     if (lan === actuallySelected) {
       opt.selected = true;
@@ -128,36 +128,12 @@ function translateIfExists(element, translatedText) {
 
 function loadDefaultLanguage() {
   visualizationLanguage = defaultFallbackLanguage;
-  // adjustLanguageSwitcher(visualizationLanguage);
   return getLanguageFile(defaultFallbackLanguage);
 }
 
 function extractLang(browserLan) {
   return browserLan.includes('-') && browserLan.length > 2 ? browserLan.split('-')[0] : browserLan;
 }
-
-// function adjustLanguageSwitcher(lan) {
-//   // const chosenLang = switchLang(lan);
-//   switcher.innerHTML = `
-//   ${getLanguageName(
-//     chosenLang
-//   )}<img src="./assets/flags/${chosenLang}.png" alt="flag" class="flag" />
-//   `;
-// }
-
-function getLanguageName(lang) {
-  switch (lang) {
-    case 'it':
-      return 'Italiano';
-    case 'en':
-    default:
-      return 'English';
-  }
-}
-
-// function switchLang(lan) {
-//   return lan === 'en' ? 'it' : 'en';
-// }
 
 function addToLocalSt(lang) {
   localStorage.setItem(LOCAL_STORAGE_LABEL, lang);
