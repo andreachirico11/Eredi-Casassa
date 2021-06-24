@@ -78,6 +78,7 @@ function translateAll() {
   translateIfExists(getById('cat6'), translator('products.cat6'));
   translateIfExists(getById('cat7'), translator('products.cat7'));
   translateIfExists(getById('cat8'), translator('products.cat8'));
+  translateIfExists(getById('cat9'), translator('products.cat9'));
   translateIfExists(getById('noProds'), translator('products.noProds'));
   translateIfExists(getById('form-title'), translator('contacts.form-title'));
   translateIfExists(getById('form1'), translator('contacts.form1'));

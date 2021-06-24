@@ -70,20 +70,23 @@ function extractCategoryTitle() {
   switch (categoryParam) {
     case 'marina':
       return 1;
-    case 'lampadari':
+    case 'accessories':
       return 2;
-    case 'arredamento':
+    case 'furniture':
       return 3;
-    case 'paralumi':
+    case 'lighting':
       return 4;
-    case 'elettrodomestici':
+    case 'supplies':
       return 5;
-    case 'ottone':
+    case 'spares':
       return 6;
-    case 'elettricità':
+    case 'appliances':
       return 7;
-    case 'riparazioni':
-    default:
+    case 'restorations':
       return 8;
+    case 'creations':
+      return 9;
+    default:
+      return 0;
   }
 }

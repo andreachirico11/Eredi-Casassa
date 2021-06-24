@@ -249,6 +249,7 @@ firebase.auth().onAuthStateChanged(
           .auth()
           .signOut()
           .then(() => {
+            sessionStorage.removeItem('isAuthenticated');
             redirectToHome();
           })
           .catch(console.error);
