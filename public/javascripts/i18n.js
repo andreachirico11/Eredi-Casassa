@@ -20,22 +20,25 @@ let translator;
 
 let visualizationLanguage = getFromLocalSt() || getBrowserLanguage();
 
-createSelect(languages, languageSelect, visualizationLanguage);
 configureAndTranslate();
-adjustFlag(visualizationLanguage);
-
-languageSelect.addEventListener('change', onSelectChange);
+if (languageSelect) {
+  createSelect(languages, languageSelect, visualizationLanguage);
+  adjustFlag(visualizationLanguage);
+  languageSelect.addEventListener('change', onSelectChange);
+}
 
 function createSelect(languages, select, actuallySelected) {
-  languages.forEach((lan) => {
-    const opt = document.createElement('option');
-    opt.value = lan;
-    opt.innerHTML = getLanguageName(lan);
-    if (lan === actuallySelected) {
-      opt.selected = true;
-    }
-    select.appendChild(opt);
-  });
+  if (select) {
+    languages.forEach((lan) => {
+      const opt = document.createElement('option');
+      opt.value = lan;
+      opt.innerHTML = getLanguageName(lan);
+      if (lan === actuallySelected) {
+        opt.selected = true;
+      }
+      select.appendChild(opt);
+    });
+  }
 }
 
 function configureAndTranslate() {

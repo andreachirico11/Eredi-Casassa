@@ -29,17 +29,20 @@ firebase.auth().onAuthStateChanged(
       );
 
       function onFetchCategories(categoriesSnapshot) {
-        categoriesSnapshot.forEach((category) => {
-          const option = createHtmlOption(category);
+        categoriesSnapshot.forEach((category, i) => {
+          const option = createHtmlOption(category, i);
           select.appendChild(option);
         });
+        translateAll();
         select.addEventListener('change', onSelectChange);
       }
 
-      function createHtmlOption(value) {
+      function createHtmlOption(value, index) {
         const option = document.createElement('option');
         option.value = value;
-        option.innerText = value;
+        option.innerHTML = `
+          <span id="i18n-cat${index + 1}"></span>
+        `;
         return option;
       }
 

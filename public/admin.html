@@ -11,6 +11,7 @@
     <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
     <script defer src="javascripts/firebase-init.js"></script>
+    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
     <style>
       .admin .content {
         margin: 0 auto;
@@ -41,6 +42,7 @@
       }
       .admin select {
         margin-bottom: 2em;
+        display: block;
       }
       .admin-form input {
         margin: 0.5em 0;
@@ -51,6 +53,12 @@
       }
       .admin .update-present {
         border: 3px solid green;
+      }
+      .admin .custom-file-upload {
+        border: 1px solid black;
+        display: inline-block;
+        cursor: pointer;
+        margin: 0.5em 0;
       }
       @media screen and (min-width: 768px) {
         .admin .header {
@@ -71,14 +79,15 @@
           <select>
             <option selected disabled>Seleziona</option>
           </select>
-          <button id="update-order">Aggiorna Ordine</button>
+          <button id="update-order">Aggiorna Ordine Oggetti</button>
           <h3 class="displayNone">Categoria vuota</h3>
         </div>
         <div class="col">
           <a href="./">Vai alla Home</a>
           <div class="admin-form">
             <input type="text" placeholder="titolo" />
-            <input type="file" placeholder="Scegli File" />
+            <label for="file-uploader" class="custom-file-upload">Scegli il file</label>
+            <input type="file" id="file-uploader" class="displayNone" />
             <button id="admin-form-button">Carica</button>
             <progress value="0" max="100" id="uploadBar" class="displayNone"></progress>
           </div>
@@ -94,5 +103,6 @@
       </table>
     </div>
   </body>
+  <script defer src="javascripts/i18n.js"></script>
   <script defer src="javascripts/admin.js"></script>
 </html>
