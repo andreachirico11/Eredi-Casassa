@@ -1,3 +1,3 @@
-# Eredi Casassa Shop Website
+[_--> Visit the Website <--_](https://www.eredicasassa.com/)
 
 ![sample](sample.jpg)
