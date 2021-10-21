@@ -81,7 +81,7 @@ textarea,
 button,
 select,
 a {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .display-none {
@@ -178,6 +178,23 @@ main {
   body {
     overflow: hidden;
   }
+}
+
+/* ---------> Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f3e3c717;
+  border-radius: 20px;
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #f3e3c717 transparent;
 }
 
 /* ---------> Background */
@@ -350,8 +367,6 @@ header {
   padding: 0;
 }
 
-
-
 .navbar-list-item {
   font-size: 1.9rem;
   line-height: 2.7;
@@ -505,39 +520,40 @@ footer {
   text-align: center;
   padding-bottom: 3em;
   padding-top: 2em;
-  }
+}
 
-  #lang-switcher {
-    cursor: pointer;
+#lang-switcher {
+  cursor: pointer;
   font-family: 'Life Savers', cursive;
+}
 
+#flag {
+  width: 9px;
+  margin-left: 0.5em;
+  height: 9px;
+  border-radius: 100%;
+}
+
+#lang-switcher {
+  color: var(--text);
+  background: none;
+  border: none;
+  /* On firefox only  */
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+}
+
+#lang-switcher option {
+  background-color: var(--main-bg);
+  border: none;
+  outline: none;
+}
+
+@media (min-width: 700px) {
+  footer p {
+    font-size: 0.9rem;
   }
-  
-  #flag {
-    width: 9px;
-    margin-left: .5em;
-    height: 9px;
-    border-radius: 100%;
-
-  }
-
-  #lang-switcher {
-    color: var(--text);
-    background: none;
-    border: none;
-  }
-
-  #lang-switcher option{
-    background-color: var(--main-bg);
-    border: none;
-    outline: none;
-    
-  }
-
-  @media (min-width: 700px) {
-    footer p {
-      font-size: 0.9rem;
-    }
 
   .footer-left {
     margin-bottom: 0;
@@ -565,8 +581,6 @@ footer {
   .footer-right {
     text-align: right;
   }
-
-
 }
 
 /* ---------> History */
@@ -631,7 +645,7 @@ footer {
   grid-auto-flow: column;
   justify-content: space-between;
   min-width: 200px;
-  margin: 6em 0
+  margin: 6em 0;
 }
 
 .policy-container::-webkit-scrollbar,
@@ -659,17 +673,16 @@ footer {
 .categories-header svg {
   width: 20px;
   margin-right: var(--global-margin);
-  transition: transform .4s;
+  transition: transform 0.4s;
 }
 
-.categories-header svg{
+.categories-header svg {
   width: 20px;
   margin-right: var(--global-margin);
 }
 
-.categories-header svg:hover  {
+.categories-header svg:hover {
   transform: scale(1.3);
-
 }
 
 .scroll-btn {
@@ -679,19 +692,16 @@ footer {
 
 .scroll-btn svg {
   height: 40px;
-  transition: transform .4s;
+  transition: transform 0.4s;
 }
 
 .scroll-btn svg:active,
-.scroll-btn svg:focus 
-{
+.scroll-btn svg:focus {
   transform: scale(1.3);
 }
 
 .scroll-btn-right {
-  transform: rotate(
-    180deg
-    );
+  transform: rotate(180deg);
 }
 
 .category {
@@ -704,26 +714,23 @@ footer {
   cursor: pointer;
 }
 
-
 .category-img-container {
   border-radius: 17.48px;
   box-shadow: var(--main-shadow);
   height: 150px;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   overflow: hidden;
 }
 
 .category-img {
   object-fit: cover;
   height: 100%;
-  transition: transform .4s; 
+  transition: transform 0.4s;
 }
 
 .category-img-animation:hover {
   transform: scale(1.1);
 }
-
-
 
 @media (min-width: 1000px) {
   .category {
@@ -733,7 +740,6 @@ footer {
     column-gap: 5em;
   }
 }
-
 
 /* ---------> Contacts&Privacy */
 
@@ -812,13 +818,11 @@ footer {
     margin-right: 0;
     margin-bottom: 1em;
     font-size: 0.8rem;
-
   }
 
   .form-last-row button {
     width: 100%;
   }
-
 }
 
 @media (min-width: 600px) {
@@ -841,7 +845,6 @@ footer {
     width: 200px;
     margin: 0;
     margin-left: auto;
-
   }
 
   .form h1 {
