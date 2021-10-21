@@ -1,53 +1,61 @@
 // MODIFY FOR NEW LANGUAGES
-const languages = ['it', 'en', 'fr'];
-function getLanguageName(lang) {
-  switch (lang) {
-    case 'it':
-      return 'Italiano';
-    case 'fr':
-      return 'Français';
-    case 'en':
-    default:
-      return 'English';
+class Lang {
+  constructor(code, value) {
+    this.code = code;
+    this.value = value;
   }
 }
+const langs = (function () {
+  return {
+    it: new Lang('it', 'Italiano'),
+    fr: new Lang('fr', 'Français'),
+    en: new Lang('en', 'English'),
+  };
+})();
+
 //////////////////////////
 
-const languageSelect = document.getElementById('lang-switcher');
-const LOCAL_STORAGE_LABEL = 'LOCAL_STORAGE_LABEL';
-const defaultFallbackLanguage = 'en';
+const htmlSelectEl = document.getElementById('lang-switcher');
+const LOCAL_STORAGE_LABEL = 'LANG';
+const defaultFallbackLanguage = langs.en;
 let translator;
 
-let visualizationLanguage = getFromLocalSt() || getBrowserLanguage();
+let visualizationLanguage = getFromLocalSt(LOCAL_STORAGE_LABEL, langs) || getBrowserLanguage(langs);
 
-configureAndTranslate();
-if (languageSelect) {
-  createSelect(languages, languageSelect, visualizationLanguage);
-  adjustFlag(visualizationLanguage);
-  languageSelect.addEventListener('change', onSelectChange);
+configureAndTranslate(visualizationLanguage.code, defaultFallbackLanguage.code);
+
+if (htmlSelectEl) {
+  createSelect(langs, htmlSelectEl, visualizationLanguage);
+  adjustFlag(visualizationLanguage.code);
+  htmlSelectEl.addEventListener('change', function () {
+    visualizationLanguage = langs[this.value];
+    addToLocalSt(visualizationLanguage, LOCAL_STORAGE_LABEL);
+    configureAndTranslate(visualizationLanguage.code, defaultFallbackLanguage.code);
+    adjustFlag(visualizationLanguage.code);
+  });
 }
 
 function createSelect(languages, select, actuallySelected) {
   if (select) {
-    languages.forEach((lan) => {
+    for (const key in languages) {
       const opt = document.createElement('option');
-      opt.value = lan;
-      opt.innerHTML = getLanguageName(lan);
-      if (lan === actuallySelected) {
+      opt.value = languages[key].code;
+      opt.innerHTML = languages[key].value;
+      if (languages[key].code === actuallySelected.code) {
         opt.selected = true;
       }
       select.appendChild(opt);
-    });
+    }
   }
 }
 
-function configureAndTranslate() {
-  getLanguageFile(visualizationLanguage)
+function configureAndTranslate(lng, fallbackLng) {
+  getLanguageFile(lng)
     .then((lanObject) => {
-      const resources = buildResources(visualizationLanguage, lanObject);
+      const resources = buildResources(lng, lanObject);
       return i18next.init({
-        lng: visualizationLanguage,
-        fallbackLng: defaultFallbackLanguage,
+        lng,
+        fallbackLng,
         debug: false,
         resources,
       });
@@ -91,10 +99,10 @@ function translateAll() {
   translateIfExists(getById('form-button'), translator('contacts.form-button'));
 }
 
-function getBrowserLanguage() {
+function getBrowserLanguage(langs) {
   let browserLan = window.navigator.language;
   if (browserLan) {
-    return extractLang(browserLan);
+    return langs[extractLang(browserLan)];
   }
   return null;
 }
@@ -103,13 +111,6 @@ function getLanguageFile(lang) {
   return fetch(`../languages/${lang}.json`)
     .then((r) => r.json())
     .catch(() => loadDefaultLanguage());
-}
-
-function onSelectChange() {
-  visualizationLanguage = this.value;
-  addToLocalSt(visualizationLanguage);
-  configureAndTranslate();
-  adjustFlag(visualizationLanguage);
 }
 
 function buildResources(languageName, langObject) {
@@ -139,10 +140,11 @@ function extractLang(browserLan) {
   return browserLan.includes('-') && browserLan.length > 2 ? browserLan.split('-')[0] : browserLan;
 }
 
-function addToLocalSt(lang) {
-  localStorage.setItem(LOCAL_STORAGE_LABEL, lang);
+function addToLocalSt(lang, label) {
+  localStorage.setItem(label, lang.code);
 }
 
-function getFromLocalSt() {
-  return localStorage.getItem(LOCAL_STORAGE_LABEL) || null;
+function getFromLocalSt(label, langs) {
+  const locLang = localStorage.getItem(label);
+  return locLang ? langs[locLang] : null;
 }
