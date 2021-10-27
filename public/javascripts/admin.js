@@ -316,6 +316,9 @@ firebase.auth().onAuthStateChanged(
         if (!getFileTitle()) {
           errorMsg += 'manca il titolo';
         }
+        if (titleIsAlreadyUsed(categoryLoadedData, getFileTitle())) {
+          errorMsg += 'il titolo è già utilizzato';
+        }
         if (errorMsg !== '') {
           alert(errorMsg);
           return false;
@@ -348,6 +351,16 @@ firebase.auth().onAuthStateChanged(
               .map((word) => titleCaseWord(word))
               .join(' ')
           : null;
+      }
+
+      function titleIsAlreadyUsed(categoryObj, title) {
+        let output = false;
+        for (const key in categoryObj) {
+          if (categoryObj[key].title.toLowerCase() === title.toLowerCase()) {
+            output = true;
+          }
+        }
+        return output;
       }
 
       function getFile() {
