@@ -306,15 +306,21 @@ firebase.auth().onAuthStateChanged(
       }
 
       function loadFormValidation() {
+        let errorMsg = '';
         if (!selectedCategory) {
-          alert('manca la categoria');
+          errorMsg += 'manca la categoria\n';
+        }
+        if (!getFile()) {
+          errorMsg += "manca l' immagine\n";
+        }
+        if (!getFileTitle()) {
+          errorMsg += 'manca il titolo';
+        }
+        if (errorMsg !== '') {
+          alert(errorMsg);
           return false;
         }
-        if (getFile() && getFileTitle()) {
-          return true;
-        }
-        alert('e compilali sti campi');
-        return false;
+        return true;
       }
 
       function getLastOrderAugmented() {
@@ -335,11 +341,13 @@ firebase.auth().onAuthStateChanged(
       }
 
       function getFileTitle() {
-        return document
-          .getElementsByTagName('input')[0]
-          .value.split(' ')
-          .map((word) => titleCaseWord(word))
-          .join(' ');
+        const value = document.getElementsByTagName('input')[0].value;
+        return value
+          ? value
+              .split(' ')
+              .map((word) => titleCaseWord(word))
+              .join(' ')
+          : null;
       }
 
       function getFile() {
