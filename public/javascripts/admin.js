@@ -16,6 +16,8 @@ firebase.auth().onAuthStateChanged(
       const progressBar = document.getElementById('uploadBar');
       const formButton = document.getElementById('admin-form-button');
       const updateOrderButton = document.getElementById('update-order');
+      const hasFileClass = 'has-file';
+      const fileControlWrapper = document.getElementsByClassName('upload-wrapper')[0];
       let task,
         selectedCategory,
         categoryLoadedData = {},
@@ -28,6 +30,8 @@ firebase.auth().onAuthStateChanged(
         console.error
       );
 
+      getFileInputEl().addEventListener('change', showPreview);
+
       function onFetchCategories(categoriesSnapshot) {
         categoriesSnapshot.forEach((category, i) => {
           const option = createHtmlOption(category, i);
@@ -35,6 +39,11 @@ firebase.auth().onAuthStateChanged(
         });
         translateAll();
         select.addEventListener('change', onSelectChange);
+      }
+
+      function showPreview() {
+        document.getElementById('preview').src = URL.createObjectURL(getFile());
+        fileControlWrapper.classList.add(hasFileClass);
       }
 
       function createHtmlOption(value, index) {
@@ -364,10 +373,16 @@ firebase.auth().onAuthStateChanged(
       }
 
       function getFile() {
-        return document.getElementsByTagName('input')[1].files[0];
+        return getFileInputEl().files[0];
+      }
+
+      function getFileInputEl() {
+        return document.getElementsByTagName('input')[1];
       }
 
       function resetForm() {
+        fileControlWrapper.classList.remove(hasFileClass);
+        document.getElementById('preview').src = '';
         document.getElementsByTagName('input')[0].value = null;
         document.getElementsByTagName('input')[1].value = null;
       }
