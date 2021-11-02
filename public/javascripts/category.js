@@ -48,6 +48,9 @@ function generateProdHtml(product) {
   prodTemplate.querySelectorAll('img')[0].src = product.imgUrl;
   prodTemplate.querySelectorAll('img')[0].alt = product.title;
   prodTemplate.querySelectorAll('span')[0].textContent = product.title;
+  prodTemplate.querySelectorAll('.category')[0].addEventListener('click', function () {
+    this.classList.toggle('modal');
+  });
   return prodTemplate;
 }
 
@@ -88,5 +91,9 @@ function extractCategoryTitle() {
       return 9;
     default:
       return 0;
+  }
+
+  function onProductClick() {
+    console.log(this);
   }
 }
