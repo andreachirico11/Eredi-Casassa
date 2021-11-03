@@ -754,6 +754,7 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  animation: background-obfuscation 1s linear;
 }
 
 .modal img {
@@ -761,16 +762,19 @@ footer {
   height: auto;
   max-height: 400px;
   border-radius: 20px;
+  animation: img-zoom 1s ease-out;
 }
 
 .modal .category-img-container {
   height: fit-content;
   width: fit-content;
   border-radius: 20px;
+  box-shadow: none;
 }
 
 .modal .category-label {
   font-size: 1.5em;
+  animation: label-zoom 2s linear;
 }
 
 .modal img.category-img-animation:hover {
@@ -940,5 +944,42 @@ footer {
   }
   to {
     text-decoration: underline;
+  }
+}
+
+@keyframes background-obfuscation {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+@keyframes img-zoom {
+  from {
+    width: 0%;
+    height: 0;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  to {
+    width: 70%;
+    height: auto;
+    opacity: 1;
+  }
+}
+
+@keyframes label-zoom {
+  from {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
