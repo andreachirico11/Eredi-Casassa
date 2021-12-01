@@ -731,11 +731,9 @@ footer {
 
 .category.toLoad {
   opacity: 0;
-  /* animation: show-loaded-image 1s linear; */
 }
 
 .category.loaded {
-  animation: show-loaded-image 0.1s linear;
   opacity: 1;
 }
 

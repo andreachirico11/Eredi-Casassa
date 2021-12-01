@@ -67,6 +67,8 @@ function lazyLoadImages() {
   const allImagesToLoad = document.querySelectorAll(`[${urlToLoadAttribute}]`);
   if (allImagesToLoad.length > 0) {
     loadImage(allImagesToLoad[0]);
+  } else {
+    showLoadedImages();
   }
 }
 
@@ -78,9 +80,14 @@ function loadImage(imgToLoad) {
 function onImageLoad() {
   this.removeAttribute(urlToLoadAttribute);
   removeEventListener(this, onImageLoad);
-  this.parentElement.parentElement.classList.remove('toLoad');
-  this.parentElement.parentElement.classList.add('loaded');
   lazyLoadImages();
+}
+
+function showLoadedImages() {
+  document.querySelectorAll('.toLoad').forEach((imageEl) => {
+    imageEl.classList.remove('toLoad');
+    imageEl.classList.add('loaded');
+  });
 }
 
 function noProductFound() {
