@@ -708,6 +708,7 @@ footer {
   width: 130px;
   text-align: center;
   cursor: pointer;
+  transition: opacity 2s, transform 1s;
 }
 
 .category a {
@@ -731,10 +732,12 @@ footer {
 
 .category.toLoad {
   opacity: 0;
+  transform: scale(0.1);
 }
 
 .category.loaded {
   opacity: 1;
+  transform: scale(1);
 }
 
 .category-img-animation:hover {
@@ -988,18 +991,6 @@ footer {
     opacity: 0;
   }
   to {
-    opacity: 1;
-  }
-}
-
-@keyframes show-loaded-image {
-  0% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
     opacity: 1;
   }
 }

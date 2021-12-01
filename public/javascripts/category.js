@@ -84,10 +84,15 @@ function onImageLoad() {
 }
 
 function showLoadedImages() {
-  document.querySelectorAll('.toLoad').forEach((imageEl) => {
-    imageEl.classList.remove('toLoad');
-    imageEl.classList.add('loaded');
-  });
+  const interv = setInterval(() => {
+    const images = document.querySelectorAll('.toLoad');
+    if (images.length === 0) {
+      clearInterval(interv);
+    } else {
+      images[0].classList.remove('toLoad');
+      images[0].classList.add('loaded');
+    }
+  }, 500);
 }
 
 function noProductFound() {
