@@ -5,6 +5,7 @@ const categoryParam = window.location.href.split('?')[1];
 const container = document.getElementById('products-container');
 const url = '../products/products.json';
 const database = firebase.database();
+const urlToLoadAttribute = 'urlToLoad';
 
 database
   .ref(categoryParam)
@@ -19,6 +20,7 @@ database
       buildCategoryTitle();
       checkForButtons(); // from scrollButton.js
       translateAll(); // from i18n.js
+      lazyLoadImages();
     },
     (err) => {
       redirectToProducts();
@@ -45,9 +47,9 @@ function extractOrderedData(snapshot) {
 
 function generateProdHtml(product) {
   const prodTemplate = categoryTemplate.content.cloneNode(true);
-  prodTemplate.querySelectorAll('img')[0].src = product.imgUrl;
   prodTemplate.querySelectorAll('img')[0].alt = product.title;
   prodTemplate.querySelectorAll('span')[0].textContent = product.title;
+  prodTemplate.querySelectorAll('img')[0].setAttribute(urlToLoadAttribute, product.imgUrl);
   prodTemplate.querySelectorAll('.category')[0].addEventListener('click', function () {
     this.classList.toggle('modal');
   });
@@ -59,6 +61,26 @@ function buildCategoryTitle() {
     <span id="i18n-cat${extractCategoryTitle()}"></span>
 
   `;
+}
+
+function lazyLoadImages() {
+  const allImagesToLoad = document.querySelectorAll(`[${urlToLoadAttribute}]`);
+  if (allImagesToLoad.length > 0) {
+    loadImage(allImagesToLoad[0]);
+  }
+}
+
+function loadImage(imgToLoad) {
+  imgToLoad.addEventListener('load', onImageLoad);
+  imgToLoad.src = imgToLoad.getAttribute(urlToLoadAttribute);
+}
+
+function onImageLoad() {
+  this.removeAttribute(urlToLoadAttribute);
+  removeEventListener(this, onImageLoad);
+  this.parentElement.parentElement.classList.remove('toLoad');
+  this.parentElement.parentElement.classList.add('loaded');
+  lazyLoadImages();
 }
 
 function noProductFound() {

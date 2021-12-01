@@ -729,6 +729,16 @@ footer {
   transition: transform 0.4s;
 }
 
+.category.toLoad {
+  opacity: 0;
+  /* animation: show-loaded-image 1s linear; */
+}
+
+.category.loaded {
+  animation: show-loaded-image 0.1s linear;
+  opacity: 1;
+}
+
 .category-img-animation:hover {
   transform: scale(1.1);
 }
@@ -980,6 +990,18 @@ footer {
     opacity: 0;
   }
   to {
+    opacity: 1;
+  }
+}
+
+@keyframes show-loaded-image {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
     opacity: 1;
   }
 }
