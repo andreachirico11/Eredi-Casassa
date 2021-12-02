@@ -63,36 +63,49 @@ function buildCategoryTitle() {
   `;
 }
 
-function lazyLoadImages() {
-  const allImagesToLoad = document.querySelectorAll(`[${urlToLoadAttribute}]`);
-  if (allImagesToLoad.length > 0) {
-    loadImage(allImagesToLoad[0]);
-  } else {
-    showLoadedImages();
+async function lazyLoadImages() {
+  const allImgToLoad = document.querySelectorAll(`[${urlToLoadAttribute}]`),
+    loadEv = 'load',
+    transEv = 'transitionend';
+  for (let i = 0; i < allImgToLoad.length; i++) {
+    if (i === 0) {
+      await promisifyEvent(allImgToLoad[i], loadEv, addSrc);
+      if (allImgToLoad.length === 1) {
+        await promisifyEvent(getImgParentCat(allImgToLoad[i]), transEv, removeClassesFromEl);
+      }
+    } else if (i === allImgToLoad.length - 1) {
+      await promisifyEvent(allImgToLoad[i], loadEv, addSrc);
+      await promisifyEvent(getImgParentCat(allImgToLoad[i - 1]), transEv, removeClassesFromEl);
+      await promisifyEvent(getImgParentCat(allImgToLoad[i]), transEv, removeClassesFromEl);
+    } else {
+      await promisifyEvent(allImgToLoad[i], loadEv, addSrc);
+      await promisifyEvent(getImgParentCat(allImgToLoad[i - 1]), transEv, removeClassesFromEl);
+    }
   }
 }
 
-function loadImage(imgToLoad) {
-  imgToLoad.addEventListener('load', onImageLoad);
-  imgToLoad.src = imgToLoad.getAttribute(urlToLoadAttribute);
+function promisifyEvent(element, eventName, callback) {
+  return new Promise((res) => {
+    const handler = () => {
+      element.removeEventListener(eventName, handler);
+      res();
+    };
+    element.addEventListener(eventName, handler);
+    callback(element);
+  });
 }
 
-function onImageLoad() {
-  this.removeAttribute(urlToLoadAttribute);
-  removeEventListener(this, onImageLoad);
-  lazyLoadImages();
+function addSrc(imgEl) {
+  imgEl.src = imgEl.getAttribute(urlToLoadAttribute);
 }
 
-function showLoadedImages() {
-  const interv = setInterval(() => {
-    const images = document.querySelectorAll('.toLoad');
-    if (images.length === 0) {
-      clearInterval(interv);
-    } else {
-      images[0].classList.remove('toLoad');
-      images[0].classList.add('loaded');
-    }
-  }, 500);
+function removeClassesFromEl(element) {
+  element.classList.remove('toLoad');
+  element.classList.add('loaded');
+}
+
+function getImgParentCat(imgEl) {
+  return imgEl.parentElement.parentElement;
 }
 
 function noProductFound() {
@@ -125,9 +138,5 @@ function extractCategoryTitle() {
       return 9;
     default:
       return 0;
-  }
-
-  function onProductClick() {
-    console.log(this);
   }
 }
