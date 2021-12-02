@@ -744,6 +744,19 @@ footer {
   transform: scale(1.1);
 }
 
+#category-title.loading-animation span {
+  position: relative;
+}
+
+#category-title.loading-animation span::before {
+  content: '';
+  position: absolute;
+  height: 0.05em;
+  top: 50px;
+  background-color: var(--text);
+  animation: category-title-loading 3s linear none infinite alternate;
+}
+
 @media (min-width: 1000px) {
   .category {
     width: 130px;
@@ -992,5 +1005,21 @@ footer {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes category-title-loading {
+  0% {
+    width: 0;
+    left: 0;
+    right: unset;
+  }
+  50% {
+    width: 100%;
+  }
+  100% {
+    left: unset;
+    right: 0;
+    width: 0;
   }
 }

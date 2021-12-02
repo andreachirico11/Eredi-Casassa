@@ -20,12 +20,20 @@ database
       buildCategoryTitle();
       checkForButtons(); // from scrollButton.js
       translateAll(); // from i18n.js
-      lazyLoadImages();
+      lazyLoadImages().finally(onFinally);
     },
     (err) => {
       redirectToProducts();
     }
   );
+
+function onFinally() {
+  const stopTitleUnderlineAnimation = function () {
+    removeEventListener(this, stopTitleUnderlineAnimation);
+    this.classList.remove('loading-animation');
+  };
+  document.getElementById('category-title').onanimationiteration = stopTitleUnderlineAnimation;
+}
 
 function addCategoryProductsToView(products) {
   if (!products || products.length === 0) {
@@ -82,6 +90,7 @@ async function lazyLoadImages() {
       await promisifyEvent(getImgParentCat(allImgToLoad[i - 1]), transEv, removeClassesFromEl);
     }
   }
+  return true;
 }
 
 function promisifyEvent(element, eventName, callback) {
