@@ -339,8 +339,8 @@ header {
   background-color: var(--main-bg);
   opacity: 0.85;
   text-align: right;
-  right: 100vw;
-  display: none;
+  right: -500px;
+  transition: all 0.5s ease-in;
 }
 
 .navbar-button {
@@ -430,6 +430,11 @@ header {
 }
 
 /* Classes to open navbar  */
+.navbar-open .navbar {
+  display: unset;
+  right: 0;
+}
+
 .navbar-open .navbar-button {
   z-index: 100;
 }
@@ -437,8 +442,7 @@ header {
   content: url('./assets/close\ nav\ button.png');
 }
 .navbar-open .navbar {
-  display: unset;
-  right: 0;
+  right: 0px;
 }
 .navbar-open .img-close {
   display: unset;
