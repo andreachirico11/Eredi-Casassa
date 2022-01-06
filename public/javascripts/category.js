@@ -58,8 +58,8 @@ function generateProdHtml(product) {
   prodTemplate.querySelectorAll('img')[0].alt = product.title;
   prodTemplate.querySelectorAll('span')[0].textContent = product.title;
   prodTemplate.querySelectorAll('img')[0].setAttribute(urlToLoadAttribute, product.imgUrl);
-  prodTemplate.querySelectorAll('.category')[0].addEventListener('click', function () {
-    this.classList.toggle('modal');
+  prodTemplate.querySelectorAll('.category')[0].addEventListener('click', () => {
+    onProductClick(product);
   });
   return prodTemplate;
 }
@@ -91,6 +91,19 @@ async function lazyLoadImages() {
     }
   }
   return true;
+}
+
+function onProductClick(product) {
+  const prodTemplate = categoryTemplate.content.cloneNode(true);
+  prodTemplate.querySelectorAll('img')[0].alt = product.title;
+  prodTemplate.querySelectorAll('span')[0].textContent = product.title;
+  prodTemplate.querySelectorAll('img')[0].setAttribute('src', product.imgUrl);
+  prodTemplate.querySelectorAll('.category')[0].classList.add('modal');
+  prodTemplate.querySelectorAll('.category')[0].classList.remove('toLoad');
+  prodTemplate.querySelectorAll('.category')[0].addEventListener('click', function () {
+    document.body.removeChild(this);
+  });
+  document.body.appendChild(prodTemplate);
 }
 
 function promisifyEvent(element, eventName, callback) {
