@@ -339,8 +339,19 @@ header {
   background-color: var(--main-bg);
   opacity: 0.85;
   text-align: right;
-  right: -500px;
   transition: all 0.5s ease-in;
+  display: none;
+  animation-name: navbar-load;
+  animation-duration: 1s;
+}
+
+@keyframes navbar-load {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.85;
+  }
 }
 
 .navbar-button {
@@ -430,9 +441,9 @@ header {
 }
 
 /* Classes to open navbar  */
+
 .navbar-open .navbar {
   display: unset;
-  right: 0;
 }
 
 .navbar-open .navbar-button {
@@ -1025,5 +1036,14 @@ footer {
     left: unset;
     right: 0;
     width: 0;
+  }
+}
+
+@keyframes navbar-unload {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 0;
   }
 }
