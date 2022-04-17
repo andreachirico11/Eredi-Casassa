@@ -13,7 +13,15 @@ You will need the following :
 Create a <i>api-jeys.js</i> file inside <i>public/javascripts</i> folder and fill with your api keys.
 
 ```javascript
-const googleApiKey = 'YOUR_API_KEY';
-const formSpreeFormId = 'YOUR_API_KEY';
-const mapsApiKey = 'YOUR_API_KEY';
+const FORMSPREE_KEY = 'YOUR_KEY';
+const GMAPS_API_KEY = 'YOUR_KEY';
+const FIREBASE_CONFIG = {
+  apiKey: 'YOUR_KEY',
+  authDomain: 'YOUR_KEY',
+  databaseURL: 'YOUR_KEY',
+  projectId: 'YOUR_KEY',
+  storageBucket: 'YOUR_KEY',
+  messagingSenderId: 'YOUR_KEY',
+  appId: 'YOUR_KEY',
+};
 ```
