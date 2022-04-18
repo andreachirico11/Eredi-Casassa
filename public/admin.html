@@ -1,130 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
-    <script src="./javascripts/api-keys.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
-    <script defer src="/__/firebase/8.2.3/firebase-auth.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
-    <script defer src="javascripts/firebase-init.js"></script>
-    <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
-    <style>
-      .admin .content {
-        margin: 0 auto;
-        width: 60%;
-      }
-      .admin .admin-table {
-        width: 100%;
-        margin-top: 2em;
-      }
-      .admin .admin-table th {
-        text-align: left;
-      }
-      .admin .displayNone {
-        display: none;
-      }
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin</title>
+  <script src="./javascripts/api-keys.js"></script>
+  <script defer
+    src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+  <script defer src="/__/firebase/8.2.3/firebase-auth.js"></script>
+  <script defer
+    src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+  <script defer
+    src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
+  <script defer src="javascripts/firebase-init.js"></script>
+  <script src="https://unpkg.com/i18next/dist/umd/i18next.min.js"></script>
+  <style>
+    .admin .content {
+      margin: 0 auto;
+      width: 60%;
+    }
+
+    .admin .admin-table {
+      width: 100%;
+      margin-top: 2em;
+    }
+
+    .admin .admin-table th {
+      text-align: left;
+    }
+
+    .admin .displayNone {
+      display: none;
+    }
+
+    .admin .header {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .admin .col {
+      margin: 1em 0;
+      width: 40%;
+    }
+
+    .admin-form {
+      display: flex;
+      flex-direction: column;
+      margin-top: 2em;
+    }
+
+    .admin select {
+      margin-bottom: 2em;
+      display: block;
+    }
+
+    .admin-form input {
+      margin: 0.5em 0;
+      max-width: 300px;
+    }
+
+    .admin-form div {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .admin-form label {
+      width: 100%;
+    }
+
+    .admin-form img {
+      display: none;
+    }
+
+    .admin-form .has-file label {
+      width: 60%;
+    }
+
+    .admin-form .has-file img {
+      display: unset;
+      width: 30%;
+      margin-bottom: 0.5em;
+    }
+
+    .admin td button {
+      margin: 0 0.5em;
+    }
+
+    .admin .update-present {
+      border: 3px solid green;
+    }
+
+    .admin .custom-file-upload {
+      border: 1px solid black;
+      display: inline-block;
+      cursor: pointer;
+      margin: 0.5em 0;
+    }
+
+    @media screen and (min-width: 768px) {
       .admin .header {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
+        flex-direction: row;
       }
-      .admin .col {
-        margin: 1em 0;
-        width: 40%;
-      }
-      .admin-form {
-        display: flex;
-        flex-direction: column;
-        margin-top: 2em;
-      }
-      .admin select {
-        margin-bottom: 2em;
-        display: block;
-      }
-      .admin-form input {
-        margin: 0.5em 0;
-        max-width: 300px;
-      }
-      .admin-form div {
-        display: flex;
-        justify-content: space-between;
-      }
-      .admin-form label {
-        width: 100%;
-      }
-      .admin-form img {
-        display: none;
-      }
-      .admin-form .has-file label {
-        width: 60%;
-      }
-      .admin-form .has-file img {
-        display: unset;
-        width: 30%;
-        margin-bottom: 0.5em;
-      }
-      .admin td button {
-        margin: 0 0.5em;
-      }
-      .admin .update-present {
-        border: 3px solid green;
-      }
-      .admin .custom-file-upload {
-        border: 1px solid black;
-        display: inline-block;
-        cursor: pointer;
-        margin: 0.5em 0;
-      }
-      @media screen and (min-width: 768px) {
-        .admin .header {
-          flex-direction: row;
-        }
-      }
-    </style>
-  </head>
-  <body class="admin">
-    <div class="content">
-      <div class="header">
-        <div class="col">
-          <h1>
-            Pagina Amministratore
-            <button id="logout">Logout</button>
-          </h1>
-          <h2>Seleziona la categoria</h2>
-          <select>
-            <option selected disabled>Seleziona</option>
-          </select>
-          <button id="update-order">Aggiorna Ordine Oggetti</button>
-          <h3 class="displayNone">Categoria vuota</h3>
-        </div>
-        <div class="col">
+    }
+
+  </style>
+</head>
+
+<body class="admin">
+  <div class="content">
+    <div class="header">
+      <div class="col">
+        <h1>
+          Pagina Amministratore
+          <button id="logout">Logout</button>
+        </h1>
+        <h2>Seleziona la categoria</h2>
+        <select>
+          <option selected disabled>Seleziona</option>
+        </select>
+        <button id="update-order">Aggiorna Ordine Oggetti</button>
+        <h3 class="displayNone">Categoria vuota</h3>
+      </div>
+      <div class="col">
+        <div class="links">
           <a href="./">Vai alla Home</a>
-          <div class="admin-form">
-            <input type="text" placeholder="titolo" />
-            <div class="upload-wrapper">
-              <label for="file-uploader" class="custom-file-upload">Scegli il file</label>
-              <input type="file" id="file-uploader" class="displayNone" accept="image/*" />
-              <img id="preview" alt="Immagine invalida" class="preview" />
-            </div>
-            <button id="admin-form-button">Carica</button>
-            <progress value="0" max="100" id="uploadBar" class="displayNone"></progress>
+          <a href="./admin_2.html">Vai a Inventario</a>
+        </div>
+        <div class="admin-form">
+          <input type="text" placeholder="titolo" />
+          <div class="upload-wrapper">
+            <label for="file-uploader" class="custom-file-upload">Scegli il
+              file</label>
+            <input type="file" id="file-uploader" class="displayNone"
+              accept="image/*" />
+            <img id="preview" alt="Immagine invalida" class="preview" />
           </div>
+          <button id="admin-form-button">Carica</button>
+          <progress value="0" max="100" id="uploadBar"
+            class="displayNone"></progress>
         </div>
       </div>
-      <p class="displayNone" id="empty">La Categoria è vuota</p>
-      <table class="admin-table">
-        <tr class="admin-table-header">
-          <th>Titolo</th>
-          <th>Immagine</th>
-          <th>Azioni</th>
-        </tr>
-      </table>
     </div>
-  </body>
-  <script defer src="javascripts/i18n.js"></script>
-  <script defer src="javascripts/admin.js"></script>
+    <p class="displayNone" id="empty">La Categoria è vuota</p>
+    <table class="admin-table">
+      <tr class="admin-table-header">
+        <th>Titolo</th>
+        <th>Immagine</th>
+        <th>Azioni</th>
+      </tr>
+    </table>
+  </div>
+</body>
+<script defer src="javascripts/i18n.js"></script>
+<script defer src="javascripts/admin.js"></script>
+
 </html>

@@ -1,3 +1,22 @@
-h1 {
-    color: orange;
+.line {
+    padding: 1em;
+    border: 1px dotted red;
+    margin: 1em auto;
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+button {
+    outline: none;
+    background: none;
+    padding: 1em 3em;
+    text-transform: uppercase;
+}
+
+
+ag-grid-angular {
+    width: 80vw;
+    height: 80vh;
+    margin: 0 auto;
 }

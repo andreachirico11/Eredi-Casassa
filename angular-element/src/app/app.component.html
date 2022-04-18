@@ -1,2 +1,4 @@
-<h1>WOrks</h1>
-<h2>yeah</h2>
+<ag-grid-angular class="ag-theme-material" [rowData]="rowData"
+    [columnDefs]="columnDefs" (gridReady)="onGridReady">
+</ag-grid-angular>
+<button (click)="forceAddDataMock()">Update data</button>
