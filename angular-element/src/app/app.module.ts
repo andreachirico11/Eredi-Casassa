@@ -4,10 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AgGridModule } from 'ag-grid-angular';
 
 import { AppComponent } from './app.component';
+import { DeleteButtonRender } from './delete-button-render';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AgGridModule.withComponents([])],
+  imports: [BrowserModule, AgGridModule.withComponents([DeleteButtonRender])],
   providers: [],
 })
 export class AppModule implements DoBootstrap {

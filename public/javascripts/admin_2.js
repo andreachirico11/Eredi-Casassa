@@ -1,19 +1,15 @@
-if (!sessionStorage.getItem('isAuthenticated')) {
-  window.stop();
-  redirectHome();
-}
-
 const databaseRef = () => firebase.database().ref('inventario');
 const angularElementNewlineEvent = 'newLineAdded';
 const angularElementUpdateEvent = 'lineUpdated';
+const angularElementDeleleteEvent = 'rowDelete';
 const angularElement = document.getElementById('angular');
 
 firebase.auth().onAuthStateChanged(
   function (user) {
-    if (!user) {
-      redirectHome();
-    } else {
+    if (user) {
       program();
+    } else {
+      redirectHome();
     }
   },
   () => {
@@ -25,9 +21,11 @@ function program() {
   listenToFirebaseDb(dataChanged);
   listenToNewLineEv();
   listenToUpdateEv();
+  listenToDeleteEvent();
   window.onbeforeunload = function () {
     removeEventListener(angularElementNewlineEvent, angularElement);
     removeEventListener(angularElementUpdateEvent, angularElement);
+    removeEventListener(angularElementDeleleteEvent, angularElement);
   };
 }
 
@@ -43,6 +41,10 @@ function listenToUpdateEv() {
   angularElement.addEventListener(angularElementUpdateEvent, onUpdateEvent);
 }
 
+function listenToDeleteEvent() {
+  angularElement.addEventListener(angularElementDeleleteEvent, onDeleteEvent);
+}
+
 async function onAngularElementEvent(customEvent) {
   await databaseRef()
     .push(customEvent.detail)
@@ -55,12 +57,12 @@ async function onUpdateEvent(customEvent) {
     .catch(() => alert('Errore update'));
 }
 
-function dataChanged(d) {
-  angularElement.setAttribute('data', JSON.stringify(d));
+async function onDeleteEvent(customEvent) {
+  await databaseRef().child(customEvent.detail).remove();
 }
 
-function extractData(ev) {
-  return JSON.parse(ev.detail);
+function dataChanged(d) {
+  angularElement.setAttribute('data', JSON.stringify(d));
 }
 
 function redirectHome() {

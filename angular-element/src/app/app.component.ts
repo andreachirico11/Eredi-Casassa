@@ -1,18 +1,15 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  CellValueChangedEvent,
-  ColDef,
-  ColumnApi,
-  GridApi,
-  GridReadyEvent,
-} from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
+import { Subscription } from 'rxjs';
+import { DeleteButtonRender } from './delete-button-render';
+import { DeleteEventService } from './delete-event.service';
 import { IData, IFirebaseData } from './Interfaces';
 import { ParsersService } from './parsers-service';
 
@@ -26,16 +23,20 @@ import { ParsersService } from './parsers-service';
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   private gridApi!: GridApi;
-  private gridColumnApi!: ColumnApi;
   private dbData!: IFirebaseData;
+
+  components = {
+    delete: DeleteButtonRender,
+  };
 
   columnDefs: ColDef[] = [
     { field: 'oggetto', editable: true },
     { field: 'quantità', editable: true },
     { field: 'prezzo', editable: true },
     { field: 'id', hide: true, suppressColumnsToolPanel: true },
+    { field: 'azione', cellRenderer: 'delete' },
   ];
 
   rowData: IData[] = [];
@@ -49,12 +50,22 @@ export class AppComponent {
 
   @Output() lineUpdated = new EventEmitter<IFirebaseData>();
 
-  constructor(private parsers: ParsersService) {}
+  @Output() rowDelete = new EventEmitter<string>();
+
+  private sub!: Subscription;
+
+  constructor(private parsers: ParsersService, private deleteService: DeleteEventService) {}
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
     this.gridApi.sizeColumnsToFit();
+    this.sub = this.deleteService.idToDelete.subscribe((id) => {
+      this.onDeleteRow(id);
+    });
   }
 
   onCellValueChanged(ev: CellValueChangedEvent) {
@@ -76,5 +87,12 @@ export class AppComponent {
         },
       ],
     });
+  }
+
+  private onDeleteRow(dataToDelete: IData) {
+    this.gridApi.applyTransaction({
+      remove: [dataToDelete],
+    });
+    this.rowDelete.emit(dataToDelete.id);
   }
 }
