@@ -7,13 +7,14 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import {
+  CellValueChangedEvent,
   ColDef,
   ColumnApi,
   GridApi,
-  GridOptions,
   GridReadyEvent,
-  IDatasource,
 } from 'ag-grid-community';
+import { IData, IFirebaseData } from './Interfaces';
+import { ParsersService } from './parsers-service';
 
 @Component({
   selector: 'app-root',
@@ -28,24 +29,27 @@ import {
 export class AppComponent {
   private gridApi!: GridApi;
   private gridColumnApi!: ColumnApi;
-  private dbData: any;
+  private dbData!: IFirebaseData;
 
-  columnDefs: ColDef[] = [{ field: 'oggetto' }, { field: 'quantità' }, { field: 'prezzo' }];
+  columnDefs: ColDef[] = [
+    { field: 'oggetto', editable: true },
+    { field: 'quantità', editable: true },
+    { field: 'prezzo', editable: true },
+    { field: 'id', hide: true, suppressColumnsToolPanel: true },
+  ];
 
-  rowData: any[] = [];
+  rowData: IData[] = [];
 
-  @Input() set data(d: any) {
-    this.dbData = JSON.parse(d);
-    this.rowData = this.parseToTable(this.dbData);
+  @Input() set data(d: string) {
+    this.dbData = JSON.parse(d) as IFirebaseData;
+    this.rowData = this.parsers.parseToTable(this.dbData);
   }
 
-  @Output() newLineAdded = new EventEmitter<any>();
+  @Output() newLineAdded = new EventEmitter<IData>();
 
-  forceAddDataMock() {
-    this.newLineAdded.emit(
-      JSON.stringify({ oggetto: 'Toyota', quantità: 'Celica', prezzo: 35000 })
-    );
-  }
+  @Output() lineUpdated = new EventEmitter<IFirebaseData>();
+
+  constructor(private parsers: ParsersService) {}
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
@@ -53,7 +57,14 @@ export class AppComponent {
     this.gridApi.sizeColumnsToFit();
   }
 
-  parseToTable(d: any) {
-    return Object.keys(d).map((k) => d[k]) as any[];
+  onCellValueChanged(ev: CellValueChangedEvent) {
+    if (ev.rowIndex !== null && ev.rowIndex >= 0) {
+      this.lineUpdated.emit(this.parsers.parseToFirebase(this.getUpdatedData(ev)));
+    }
+  }
+
+  private getUpdatedData(ev: CellValueChangedEvent) {
+    const rowUpdated = this.rowData[ev.rowIndex as number];
+    return { ...rowUpdated, prezzo: Number(rowUpdated.prezzo) };
   }
 }

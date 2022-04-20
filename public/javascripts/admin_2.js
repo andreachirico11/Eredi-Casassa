@@ -3,6 +3,11 @@ if (!sessionStorage.getItem('isAuthenticated')) {
   redirectHome();
 }
 
+const databaseRef = () => firebase.database().ref('inventario');
+const angularElementNewlineEvent = 'newLineAdded';
+const angularElementUpdateEvent = 'lineUpdated';
+const angularElement = document.getElementById('angular');
+
 firebase.auth().onAuthStateChanged(
   function (user) {
     if (!user) {
@@ -17,25 +22,41 @@ firebase.auth().onAuthStateChanged(
 );
 
 function program() {
-  const angularElement = document.getElementById('angular');
-  angularElement.addEventListener('newLineAdded', function _(ev) {
-    onAngularElementEvent(extractData(ev));
-  });
-  firebase
-    .database()
-    .ref('inventario')
-    .on('value', (d) => angularElement.setAttribute('data', JSON.stringify(d)), console.error);
+  listenToFirebaseDb(dataChanged);
+  listenToNewLineEv();
+  listenToUpdateEv();
+  window.onbeforeunload = function () {
+    removeEventListener(angularElementNewlineEvent, angularElement);
+    removeEventListener(angularElementUpdateEvent, angularElement);
+  };
 }
 
-async function onAngularElementEvent(parsedDatas) {
-  await firebase
-    .database()
-    .ref('inventario')
-    .push(parsedDatas)
-    .then((x) => {
-      console.log('O K : ');
-    })
-    .catch(() => alert('Errore update'));
+function listenToFirebaseDb(onDataChange) {
+  return databaseRef().on('value', onDataChange, console.error);
+}
+
+function listenToNewLineEv() {
+  angularElement.addEventListener(angularElementNewlineEvent, onAngularElementEvent);
+}
+
+function listenToUpdateEv() {
+  angularElement.addEventListener(angularElementUpdateEvent, onUpdateEvent);
+}
+
+async function onAngularElementEvent(unparsedDatas) {
+  await databaseRef()
+    .push(JSON.parse(unparsedDatas.detail))
+    .catch(() => alert('Errore add'));
+}
+
+async function onUpdateEvent(unparsedDatas) {
+  await databaseRef()
+    .update(unparsedDatas.detail)
+    .catch(() => alert('Errore add'));
+}
+
+function dataChanged(d) {
+  angularElement.setAttribute('data', JSON.stringify(d));
 }
 
 function extractData(ev) {
