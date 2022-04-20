@@ -14,9 +14,14 @@ export class ParsersService {
   parseToFirebase(data: IData) {
     const output: IFirebaseData = {};
     if (data.id) {
-      const { oggetto, quantità, prezzo, id } = data;
-      output[id] = { prezzo, oggetto, quantità };
+      output[data.id] = this.parseToFirebaseObj(data);
     }
     return output;
+  }
+  parseToFirebaseObj(data: IData): Omit<IData, 'id'> {
+    let { oggetto, quantità, prezzo } = data;
+    quantità = Number(quantità);
+    prezzo = Number(prezzo);
+    return { oggetto, quantità, prezzo };
   }
 }

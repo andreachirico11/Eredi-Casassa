@@ -58,13 +58,23 @@ export class AppComponent {
   }
 
   onCellValueChanged(ev: CellValueChangedEvent) {
-    if (ev.rowIndex !== null && ev.rowIndex >= 0) {
-      this.lineUpdated.emit(this.parsers.parseToFirebase(this.getUpdatedData(ev)));
+    if (ev.data.id) {
+      this.lineUpdated.emit(this.parsers.parseToFirebase(ev.data));
+    } else {
+      this.newLineAdded.emit(this.parsers.parseToFirebaseObj(ev.data));
     }
   }
 
-  private getUpdatedData(ev: CellValueChangedEvent) {
-    const rowUpdated = this.rowData[ev.rowIndex as number];
-    return { ...rowUpdated, prezzo: Number(rowUpdated.prezzo) };
+  onAddRow() {
+    this.gridApi.applyTransaction({
+      add: [
+        {
+          oggetto: '',
+          quantità: 0,
+          prezzo: 0,
+          id: null,
+        },
+      ],
+    });
   }
 }

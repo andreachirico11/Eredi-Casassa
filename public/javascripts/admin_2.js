@@ -43,16 +43,16 @@ function listenToUpdateEv() {
   angularElement.addEventListener(angularElementUpdateEvent, onUpdateEvent);
 }
 
-async function onAngularElementEvent(unparsedDatas) {
+async function onAngularElementEvent(customEvent) {
   await databaseRef()
-    .push(JSON.parse(unparsedDatas.detail))
+    .push(customEvent.detail)
     .catch(() => alert('Errore add'));
 }
 
-async function onUpdateEvent(unparsedDatas) {
+async function onUpdateEvent(customEvent) {
   await databaseRef()
-    .update(unparsedDatas.detail)
-    .catch(() => alert('Errore add'));
+    .update(customEvent.detail)
+    .catch(() => alert('Errore update'));
 }
 
 function dataChanged(d) {

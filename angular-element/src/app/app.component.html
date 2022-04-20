@@ -1,4 +1,5 @@
+<button (click)="onAddRow()">Aggiungi riga</button>
 <ag-grid-angular class="ag-theme-material" [rowData]="rowData"
-    [columnDefs]="columnDefs" (gridReady)="onGridReady"
+    [columnDefs]="columnDefs" (gridReady)="onGridReady($event)"
     (cellValueChanged)="onCellValueChanged($event)">
 </ag-grid-angular>
