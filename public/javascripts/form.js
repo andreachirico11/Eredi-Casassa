@@ -22,7 +22,7 @@ form.onsubmit = (e) => {
     return access(name.value, email.value);
   }
   if (validateForm()) {
-    form.setAttribute('action', `https://formspree.io/f/${formSpreeFormId}`);
+    form.setAttribute('action', `https://formspree.io/f/${FORMSPREE_KEY}`);
     return true;
   }
   form.classList.add('invalid-sub');
