@@ -1,0 +1,18 @@
+{
+  "name": "eredi-casassa",
+  "version": "1.0.0",
+  "description": "[_--> Visit the Website <--_](https://www.eredicasassa.com/)",
+  "main": "index.js",
+  "dependencies": {
+    "firebase-tools": "^10.8.0"
+  },
+  "scripts": {
+    "firebase": "firebase"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com-personal-user:andreachirico11/Eredi-Casassa.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
